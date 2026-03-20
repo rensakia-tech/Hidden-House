@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Hidden House">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a0a0f">
+<meta name="msapplication-navbutton-color" content="#0a0a0f">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMGEwYTBmIi8+PHRleHQgeD0iOTAiIHk9IjEwNSIgZm9udC1zaXplPSI3MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2M0YTM1YSI+4p+hPC90ZXh0Pjwvc3ZnPg==">
+<title>⟡ The Hidden House</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  min-height:100vh;min-height:100dvh;
+  background:linear-gradient(160deg,#0a0a0f 0%,#12101e 40%,#1a0f14 70%,#0d0d12 100%);
+  color:#e8e0d4;font-family:'Cormorant Garamond','Georgia',serif;
+  display:flex;flex-direction:column;align-items:center;
+  padding:1.2rem 1rem 3rem;padding-top:max(1.2rem,env(safe-area-inset-top));
+  padding-bottom:max(3rem,env(safe-area-inset-bottom));
+  overflow-x:hidden;opacity:0;transition:opacity 1.2s ease;
+  -webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;
+  -webkit-overflow-scrolling:touch;
+}
+body.loaded{opacity:1}
+
+@keyframes float{0%,100%{transform:translateY(0) translateX(0);opacity:var(--po)}50%{transform:translateY(-30px) translateX(10px);opacity:calc(var(--po) + 0.08)}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 15px rgba(196,163,90,0.1)}50%{box-shadow:0 0 30px rgba(196,163,90,0.25)}}
+@keyframes redPulse{0%,100%{opacity:0.3}50%{opacity:0.8}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes vibeReveal{from{opacity:0;transform:scale(0.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes secretReveal{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
+@keyframes petBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes petSad{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes petHappy{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+@keyframes breathe{0%,100%{opacity:0.3}50%{opacity:0.7}}
+@keyframes flicker{0%,100%{opacity:0.8;transform:scale(1)}25%{opacity:0.6;transform:scale(0.98)}75%{opacity:1;transform:scale(1.02)}}
+@keyframes gentleSway{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
+@keyframes pageIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+
+.particle{position:fixed;border-radius:50%;pointer-events:none}
+.fc{font-family:'Cinzel',serif}.fg{font-family:'Cormorant Garamond',serif}
+
+/* NAV */
+.nav{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;margin-bottom:1.2rem;z-index:10;position:relative}
+.nav-btn{
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;padding:8px 12px;cursor:pointer;transition:all 0.3s ease;
+  font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.08em;color:#888;text-transform:uppercase;
+}
+.nav-btn:hover{border-color:rgba(196,163,90,0.3);color:#c4a35a;background:rgba(255,255,255,0.05)}
+.nav-btn.active{border-color:#c4a35a;color:#c4a35a;background:rgba(196,163,90,0.08)}
+
+/* SECTIONS */
+.section{display:none;width:100%;max-width:560px;position:relative;z-index:2;animation:slideUp 0.5s ease}
+.section.active{display:block}
+.stitle{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;color:#c4a35a;text-transform:uppercase;text-align:center;margin-bottom:1rem;opacity:0.7}
+
+/* LORE QUOTE */
+.lore-quote{text-align:center;max-width:440px;margin:0 auto 1.2rem;font-style:italic;font-size:0.9rem;color:#c4a35a;opacity:0.45;line-height:1.5;min-height:1.5em;transition:opacity 0.8s ease;z-index:2;position:relative}
+
+/* PERSON CARDS */
+.duo{display:flex;align-items:center;justify-content:center;gap:1.2rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.pcard{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1.4rem;cursor:pointer;transition:all 0.4s ease;min-width:170px;text-align:center}
+.pcard:hover{border-color:rgba(196,163,90,0.3);background:rgba(255,255,255,0.04)}
+.pcard.sel{animation:pulseGlow 3s ease-in-out infinite;cursor:default}
+.pcard .icon{font-size:1.6rem;margin-bottom:0.3rem}
+.pcard .role{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.2rem}
+.pcard .role.n{color:#7b6e9e}.pcard .role.a{color:#5a7a8a}
+.pcard .nm{font-size:1.1rem;font-weight:500}
+.pcard .prompt{margin-top:0.5rem;font-size:0.78rem;font-style:italic;color:#666}
+.badge{margin-top:0.5rem;padding:5px 10px;border-radius:7px;display:inline-flex;align-items:center;gap:5px}
+.badge .be{font-size:1rem}.badge .bn{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.05em}
+.rstr{width:32px;height:2px;background:linear-gradient(90deg,transparent,#8b1a1a50,transparent);opacity:0.4;transition:all 0.5s}
+.rstr.on{opacity:1;animation:redPulse 2s ease-in-out infinite}
+
+/* MOOD GRID */
+.mpanel{max-width:500px;width:100%;margin:0 auto 1.2rem}
+.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;animation:slideUp 0.4s ease}
+@media(max-width:600px){.mgrid{grid-template-columns:repeat(2,1fr)}}
+.mcard{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:9px;padding:10px 12px;cursor:pointer;transition:all 0.3s ease;position:relative;overflow:hidden}
+.mcard:hover{transform:translateY(-2px);background:rgba(255,255,255,0.05);border-color:var(--ac)}
+.mcard .mh{display:flex;align-items:center;gap:5px;margin-bottom:2px}
+.mcard .me{font-size:1rem}.mcard .mn{font-family:'Cinzel',serif;font-size:0.7rem;font-weight:500;letter-spacing:0.04em}
+.mcard .md{font-size:0.7rem;color:#999;font-style:italic;line-height:1.25}
+
+/* VIBE */
+.vbox{text-align:center;padding:1.5rem;background:rgba(255,255,255,0.02);border:1px solid rgba(196,163,90,0.15);border-radius:14px;margin:0.5rem auto;animation:vibeReveal 0.8s ease forwards;max-width:480px}
+.vbox .vl{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.3em;color:#c4a35a;text-transform:uppercase;margin-bottom:0.6rem;opacity:0.7}
+.vbox .vi{font-size:1.6rem;margin-bottom:0.5rem}
+.vbox .vt{font-size:1.05rem;font-style:italic;line-height:1.45;padding:0 0.6rem}
+.vbox .vc{margin-top:0.8rem;font-size:0.68rem;color:#666;display:flex;align-items:center;justify-content:center;gap:5px}
+
+/* SECRET */
+.sbox{text-align:center;padding:1.2rem 1.5rem;background:rgba(196,163,90,0.04);border:1px solid rgba(196,163,90,0.2);border-radius:14px;margin:0.8rem auto;animation:secretReveal 1s ease forwards;max-width:480px}
+.sbox .sl{font-family:'Cinzel',serif;font-size:0.48rem;letter-spacing:0.3em;color:#c4a35a;text-transform:uppercase;margin-bottom:0.5rem;background:linear-gradient(90deg,#c4a35a,#e8d5a0,#c4a35a);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite}
+.sbox .st{font-size:0.95rem;font-style:italic;color:#e8d5a0;line-height:1.45}
+
+/* JOURNAL */
+.journal{max-width:480px;width:100%;margin:1rem auto;animation:slideUp 0.5s ease}
+.jrow{display:flex;gap:0.7rem;flex-wrap:wrap}
+.jentry{flex:1;min-width:160px}
+.jentry label{display:block;font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.3rem}
+.jentry label.nl{color:#7b6e9e}.jentry label.al{color:#5a7a8a}
+.jentry textarea{width:100%;height:65px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:9px;color:#e8e0d4;font-family:'Cormorant Garamond',serif;font-size:0.88rem;resize:none;outline:none;transition:border-color 0.3s}
+.jentry textarea::placeholder{color:#555;font-style:italic}
+.jentry textarea:focus{border-color:rgba(196,163,90,0.3)}
+
+/* CONSTELLATION */
+.constellation{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:1.2rem 1.2rem 2rem;background:rgba(0,0,0,0.3);border-radius:14px;border:1px solid rgba(255,255,255,0.04);min-height:50px;overflow:visible;position:relative}
+.constellation-empty{font-style:italic;color:#444;font-size:0.8rem;text-align:center;width:100%;padding:0.8rem}
+.sdot{width:11px;height:11px;border-radius:50%;cursor:pointer;transition:all 0.3s;opacity:0.7;position:relative}
+.sdot:hover{opacity:1;transform:scale(1.6);z-index:100}
+.stt{display:none;position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);background:rgba(20,18,35,0.75);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(196,163,90,0.2);border-radius:8px;padding:10px 14px;white-space:nowrap;font-size:0.7rem;color:#e8e0d4;z-index:1000;pointer-events:none;box-shadow:0 4px 24px rgba(0,0,0,0.7);min-width:220px}
+.sdot:hover .stt{display:block}
+.stt .td{color:#c4a35a;font-family:'Cinzel',serif;font-size:0.62rem}
+.stt .tm{margin-top:3px;white-space:normal}.stt .tv{margin-top:3px;color:#999;font-style:italic;font-size:0.68rem;max-width:230px;white-space:normal}
+.stt .tj{margin-top:4px;font-size:0.66rem;max-width:230px;white-space:normal;line-height:1.35}
+.stt .tj.nj{color:#7b6e9e}.stt .tj.aj{color:#5a7a8a}
+
+/* TTT */
+.ttt-board{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;max-width:260px;margin:0.8rem auto;background:rgba(196,163,90,0.1);border-radius:9px;padding:4px}
+.ttt-cell{aspect-ratio:1;background:rgba(10,10,15,0.8);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;cursor:pointer;transition:all 0.2s;border:1px solid rgba(255,255,255,0.04)}
+.ttt-cell:hover{background:rgba(255,255,255,0.05);border-color:rgba(196,163,90,0.2)}
+.ttt-cell.taken{cursor:default}
+.ttt-status{text-align:center;margin:0.8rem 0;font-size:0.95rem;font-style:italic;color:#c4a35a;min-height:1.3em}
+.ttt-score{text-align:center;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.08em;color:#888;margin-bottom:0.8rem}
+
+/* TOD */
+.tod-card{text-align:center;padding:1.5rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;max-width:400px;margin:0.8rem auto;min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.tod-type{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.6rem}
+.tod-text{font-size:1.05rem;font-style:italic;line-height:1.45;padding:0 0.8rem}
+.tod-time{font-size:0.65rem;color:#666;margin-top:0.8rem;font-family:'Cinzel',serif;letter-spacing:0.08em}
+.tod-btns{display:flex;gap:7px;justify-content:center;margin:0.8rem auto;flex-wrap:wrap}
+
+/* PET - ANIMATED SPRITE */
+.pet-area{text-align:center;padding:1.3rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;max-width:400px;margin:0.8rem auto}
+.ember-sprite{position:relative;width:80px;height:100px;margin:0.5rem auto 0.8rem;cursor:pointer}
+.ember-body{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:50px;height:65px;background:radial-gradient(ellipse at 50% 80%,#e87d2f,#c4a35a 40%,#8b1a1a 80%,transparent);border-radius:50% 50% 45% 45%;filter:blur(1px);transition:all 0.5s}
+.ember-core{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);width:30px;height:40px;background:radial-gradient(ellipse at 50% 70%,#ffe4a0,#e8a530 60%,transparent);border-radius:50% 50% 40% 40%;filter:blur(0.5px);transition:all 0.5s}
+.ember-tip{position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:20px;height:30px;background:radial-gradient(ellipse at 50% 90%,#ffe4a0,#e87d2f 50%,transparent);border-radius:50% 50% 30% 30%;transition:all 0.5s}
+.ember-eyes{position:absolute;bottom:25px;left:50%;transform:translateX(-50%);display:flex;gap:12px;z-index:5}
+.ember-eye{width:8px;height:8px;background:#1a1a2e;border-radius:50%;position:relative;transition:all 0.3s}
+.ember-eye::after{content:'';position:absolute;top:1px;left:2px;width:3px;height:3px;background:rgba(255,255,255,0.7);border-radius:50%}
+.ember-mouth{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);width:8px;height:4px;border-bottom:2px solid #1a1a2e;border-radius:0 0 50% 50%;z-index:5;transition:all 0.3s}
+.ember-glow{position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:70px;height:20px;background:radial-gradient(ellipse,rgba(232,125,47,0.3),transparent);border-radius:50%;transition:all 0.5s}
+.ember-bubble{position:absolute;top:-30px;left:50%;transform:translateX(-50%);background:rgba(20,18,35,0.8);backdrop-filter:blur(8px);border:1px solid rgba(196,163,90,0.2);border-radius:10px;padding:5px 10px;font-size:0.65rem;color:#c4a35a;font-style:italic;white-space:nowrap;opacity:0;transition:opacity 0.5s;pointer-events:none;z-index:10}
+.ember-bubble.show{opacity:1}
+/* Ember states */
+.ember-sprite.thriving .ember-body{height:70px;width:55px;filter:blur(0.5px)}
+.ember-sprite.thriving .ember-core{height:45px;width:35px}
+.ember-sprite.thriving .ember-glow{width:90px;height:25px;background:radial-gradient(ellipse,rgba(232,125,47,0.4),transparent)}
+.ember-sprite.thriving .ember-mouth{width:10px;height:5px;border-bottom:2px solid #1a1a2e;border-radius:0 0 50% 50%}
+.ember-sprite.content .ember-body{height:65px}
+.ember-sprite.flickering .ember-body{height:55px;width:40px;opacity:0.8}
+.ember-sprite.flickering .ember-core{height:30px;width:22px;opacity:0.7}
+.ember-sprite.flickering .ember-glow{width:50px;opacity:0.5}
+.ember-sprite.flickering .ember-tip{height:20px;opacity:0.6}
+.ember-sprite.dim .ember-body{height:45px;width:35px;opacity:0.5;background:radial-gradient(ellipse at 50% 80%,#8b6a3a,#5a3a1a 60%,transparent)}
+.ember-sprite.dim .ember-core{height:20px;width:16px;opacity:0.4}
+.ember-sprite.dim .ember-glow{width:35px;opacity:0.2}
+.ember-sprite.dim .ember-tip{height:12px;opacity:0.3}
+.ember-sprite.dim .ember-eye{width:6px;height:6px}
+.ember-sprite.dim .ember-mouth{width:6px;border-bottom-color:#3a3a3a}
+.ember-sprite.wisp .ember-body{height:30px;width:25px;opacity:0.3;background:radial-gradient(ellipse at 50% 80%,#5a5a6a,#3a3a4a 60%,transparent)}
+.ember-sprite.wisp .ember-core{height:12px;width:10px;opacity:0.2}
+.ember-sprite.wisp .ember-glow{display:none}
+.ember-sprite.wisp .ember-tip{display:none}
+.ember-sprite.wisp .ember-eye{width:5px;height:3px;border-radius:50%;opacity:0.5}
+.ember-sprite.wisp .ember-mouth{width:5px;border-bottom-color:#555}
+/* Ember animations */
+@keyframes emberDance{0%,100%{transform:translateX(-50%) translateY(0) rotate(-2deg)}25%{transform:translateX(-50%) translateY(-4px) rotate(1deg)}50%{transform:translateX(-50%) translateY(-2px) rotate(-1deg)}75%{transform:translateX(-50%) translateY(-5px) rotate(2deg)}}
+@keyframes emberShiver{0%,100%{transform:translateX(-50%) translateX(0)}25%{transform:translateX(-50%) translateX(-2px)}75%{transform:translateX(-50%) translateX(2px)}}
+@keyframes emberBlink{0%,92%,100%{height:8px;border-radius:50%}95%{height:2px;border-radius:50%}}
+@keyframes emberFlicker{0%,100%{opacity:0.8}50%{opacity:0.4}}
+.ember-sprite.thriving .ember-body{animation:emberDance 2s ease-in-out infinite}
+.ember-sprite.content .ember-body{animation:emberDance 3s ease-in-out infinite}
+.ember-sprite.flickering .ember-body{animation:emberFlicker 2s ease-in-out infinite}
+.ember-sprite.dim .ember-body{animation:emberShiver 3s ease-in-out infinite}
+.ember-sprite.wisp .ember-body{animation:emberFlicker 4s ease-in-out infinite}
+/* Ember face expressions per state */
+.ember-sprite .ember-eye{animation:emberBlink 3.5s ease-in-out infinite}
+.ember-sprite.dim .ember-eye{animation:emberBlink 6s ease-in-out infinite}
+.ember-sprite.wisp .ember-eye{animation:none}
+.ember-sprite.thriving .ember-eye{width:7px;height:7px;background:#1a1a2e;border-radius:50%;animation:emberBlink 3s ease-in-out infinite}
+.ember-sprite.thriving .ember-eye::after{width:3px;height:3px;top:1px;left:2px}
+.ember-sprite.thriving .ember-mouth{width:10px;height:5px;border:none;border-bottom:2px solid #1a1a2e;border-radius:0 0 55% 55%}
+.ember-sprite.content .ember-eye{width:8px;height:8px;animation:emberBlink 4s ease-in-out infinite}
+.ember-sprite.content .ember-mouth{width:8px;height:4px;border-bottom:2px solid #1a1a2e;border-radius:0 0 50% 50%}
+.ember-sprite.flickering .ember-eye{width:8px;height:6px;border-radius:50% 50% 50% 50%;transform:translateY(-2px);animation:emberBlink 5s ease-in-out infinite}
+.ember-sprite.flickering .ember-eye::after{top:0;left:2px;width:3px;height:2px}
+.ember-sprite.flickering .ember-mouth{width:6px;height:3px;border-bottom:none;border-top:2px solid #1a1a2e;border-left:1px solid #1a1a2e;border-right:1px solid #1a1a2e;border-radius:50% 50% 0 0;transform:translateY(2px)}
+.ember-sprite.dim .ember-eye{width:7px;height:4px;border-radius:60% 60% 40% 40%;opacity:0.7}
+.ember-sprite.dim .ember-eye::after{width:2px;height:2px;top:0;left:1px;opacity:0.4}
+.ember-sprite.dim .ember-mouth{width:7px;height:3px;border-bottom:none;border-top:2px solid #3a3a3a;border-left:1px solid #3a3a3a;border-right:1px solid #3a3a3a;border-radius:50% 50% 0 0}
+.ember-sprite.wisp .ember-eye{width:6px;height:2px;border-radius:50%;opacity:0.4;background:#444}
+.ember-sprite.wisp .ember-eye::after{display:none}
+.ember-sprite.wisp .ember-mouth{width:5px;height:2px;border-bottom:none;border-top:1px solid #555;border-left:1px solid #555;border-right:1px solid #555;border-radius:50% 50% 0 0;opacity:0.5}
+/* Happy squint when fed */
+@keyframes emberHappySquint{0%,100%{height:8px;border-radius:50%}30%,70%{height:3px;border-radius:50%;transform:translateY(2px)}}
+.ember-sprite.fed .ember-eye{animation:emberHappySquint 0.8s ease}
+.ember-sprite.fed .ember-mouth{width:12px;height:7px;border-bottom:2px solid #1a1a2e;border-left:2px solid #1a1a2e;border-right:2px solid #1a1a2e;border-top:none;border-radius:0 0 50% 50%}
+/* Poke reaction */
+@keyframes emberSurprise{0%{transform:translateX(-50%) scale(1)}30%{transform:translateX(-50%) scale(1.15)}60%{transform:translateX(-50%) scale(0.95)}100%{transform:translateX(-50%) scale(1)}}
+.ember-sprite.poked .ember-body{animation:emberSurprise 0.5s ease!important}
+.ember-sprite.poked .ember-eye{width:10px!important;height:10px!important;border-radius:50%!important}
+/* Cheek blush when loved */
+.ember-cheeks{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:24px;z-index:5;opacity:0;transition:opacity 0.5s}
+.ember-cheek{width:8px;height:5px;background:rgba(232,125,47,0.5);border-radius:50%;filter:blur(1px)}
+.ember-sprite.loved .ember-cheeks{opacity:1}
+.ember-sprite.loved .ember-eye{height:3px!important;border-radius:50%!important;transform:translateY(2px)}
+.ember-sprite.loved .ember-mouth{width:10px;height:5px;border-bottom:2px solid #1a1a2e;border-left:2px solid #1a1a2e;border-right:2px solid #1a1a2e;border-top:none;border-radius:0 0 50% 50%}
+.pet-name{font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:0.1em;color:#c4a35a;margin-bottom:0.6rem}
+.pet-mood{font-style:italic;font-size:0.85rem;color:#999;margin-bottom:0.8rem;min-height:1.2em}
+.pet-bars{max-width:240px;margin:0 auto 0.8rem}
+.pet-bar{margin-bottom:0.5rem}
+.pet-bar-label{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.08em;color:#888;text-transform:uppercase;margin-bottom:2px;text-align:left}
+.pet-bar-track{height:7px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden}
+.pet-bar-fill{height:100%;border-radius:4px;transition:width 0.5s ease}
+.pet-btns{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:0.4rem}
+.pet-log{margin-top:0.8rem;font-size:0.7rem;color:#666;font-style:italic;max-height:70px;overflow-y:auto;text-align:left;padding:0 0.8rem}
+.pet-log div{margin-bottom:2px}
+
+/* GRIMOIRE */
+.grim-page{text-align:center;padding:2rem 1.5rem;background:rgba(255,255,255,0.015);border:1px solid rgba(196,163,90,0.12);border-radius:16px;max-width:460px;margin:0.8rem auto;min-height:200px;position:relative;animation:pageIn 0.6s ease}
+.grim-page::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 50% 0%,rgba(196,163,90,0.04) 0%,transparent 70%);border-radius:16px;pointer-events:none}
+.grim-number{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.3em;color:#c4a35a;opacity:0.5;margin-bottom:1rem;text-transform:uppercase}
+.grim-text{font-size:1.1rem;font-style:italic;line-height:1.7;color:#e8e0d4;padding:0 0.5rem;position:relative;z-index:1}
+.grim-symbol{font-size:1.5rem;margin-top:1rem;opacity:0.4}
+.grim-fav{position:absolute;top:12px;right:14px;font-size:1rem;cursor:pointer;opacity:0.3;transition:all 0.3s;z-index:2}
+.grim-fav:hover,.grim-fav.saved{opacity:1}
+.grim-nav{display:flex;gap:8px;justify-content:center;margin:1rem auto;align-items:center}
+.grim-filter{display:flex;gap:6px;justify-content:center;margin:0.5rem auto;flex-wrap:wrap}
+
+/* HEARTH */
+.hearth-room{text-align:center;padding:2rem;background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.06);border-radius:16px;max-width:460px;margin:0.8rem auto;min-height:280px;position:relative;overflow:hidden;transition:all 1s ease}
+.hearth-visual{font-size:4rem;margin:1rem 0;transition:all 0.8s ease}
+.hearth-label{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;color:#c4a35a;margin-bottom:0.5rem}
+.hearth-desc{font-style:italic;font-size:0.9rem;color:#999;line-height:1.5;margin-bottom:1.2rem;min-height:2em}
+.hearth-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:320px;margin:0 auto}
+@media(max-width:400px){.hearth-grid{grid-template-columns:repeat(2,1fr)}}
+.hearth-btn{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 8px;cursor:pointer;transition:all 0.3s;text-align:center}
+.hearth-btn:hover{border-color:rgba(196,163,90,0.3);background:rgba(255,255,255,0.05)}
+.hearth-btn.active{border-color:#c4a35a;background:rgba(196,163,90,0.06)}
+.hearth-btn .hb-icon{font-size:1.5rem;display:block;margin-bottom:4px}
+.hearth-btn .hb-name{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.08em;color:#888}
+.hearth-audio{margin-top:1rem;font-size:0.65rem;color:#555;font-style:italic}
+
+/* PERSONALITY */
+.persona-container{max-width:500px;margin:0 auto}
+.persona-profiles{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.5rem}
+.persona-card{flex:1;min-width:200px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1.2rem;text-align:center;transition:all 0.3s;cursor:pointer}
+.persona-card:hover{border-color:rgba(196,163,90,0.2);background:rgba(255,255,255,0.04)}
+.persona-card.active-card{border-color:#c4a35a;background:rgba(196,163,90,0.05)}
+.persona-card .pc-icon{font-size:1.5rem;margin-bottom:0.4rem}
+.persona-card .pc-name{font-family:'Cinzel',serif;font-size:0.9rem;letter-spacing:0.08em;margin-bottom:0.2rem}
+.persona-card .pc-role{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.6rem}
+.persona-card .pc-role.n{color:#7b6e9e}.persona-card .pc-role.a{color:#5a7a8a}
+.persona-stack{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.persona-tag{font-family:'Cinzel',serif;font-size:0.55rem;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#c4a35a;letter-spacing:0.05em;cursor:pointer;transition:all 0.3s}
+.persona-tag:hover{border-color:#c4a35a;background:rgba(196,163,90,0.1)}
+.persona-tag.active-tag{border-color:#c4a35a;background:rgba(196,163,90,0.12);color:#e8d5a0}
+.persona-detail{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:1.5rem;animation:pageIn 0.5s ease;margin-top:0.5rem}
+.persona-detail .pd-system{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:#c4a35a;opacity:0.6;margin-bottom:0.3rem}
+.persona-detail .pd-type{font-family:'Cinzel',serif;font-size:1.1rem;color:#e8e0d4;margin-bottom:0.8rem}
+.persona-detail .pd-desc{font-size:0.92rem;line-height:1.6;color:#bbb;font-style:italic}
+.persona-detail .pd-traits{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:0.8rem}
+.persona-detail .pd-trait{font-size:0.65rem;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:#999}
+.persona-synastry{margin-top:1.2rem;padding:1.2rem;background:rgba(196,163,90,0.03);border:1px solid rgba(196,163,90,0.12);border-radius:12px;text-align:center}
+.persona-synastry .ps-title{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.2em;color:#c4a35a;text-transform:uppercase;margin-bottom:0.6rem}
+.persona-synastry .ps-text{font-size:0.9rem;font-style:italic;line-height:1.5;color:#e8d5a0}
+
+/* BUTTONS */
+.btn{background:none;border:1px solid rgba(196,163,90,0.2);color:#c4a35a;padding:7px 16px;border-radius:7px;cursor:pointer;font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:0.08em;transition:all 0.3s}
+.btn:hover{border-color:#c4a35a;background:rgba(196,163,90,0.08)}
+.btn-s{font-size:0.62rem;padding:5px 11px}
+.btn-g{background:none;border:1px solid rgba(255,255,255,0.06);color:#666;padding:4px 9px;border-radius:5px;cursor:pointer;font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.06em;transition:all 0.3s}
+.btn-g:hover{border-color:rgba(255,255,255,0.15);color:#999}
+.btn-d{border-color:rgba(139,26,26,0.3);color:#8b1a1a}.btn-d:hover{border-color:#8b1a1a;background:rgba(139,26,26,0.08)}
+.btn-purple{border-color:rgba(123,110,158,0.3);color:#7b6e9e}.btn-purple:hover{border-color:#7b6e9e;background:rgba(123,110,158,0.08)}
+.acts{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:1rem}
+.game-panel{animation:slideUp 0.4s ease}
+.game-tab{transition:all 0.3s}
+.game-tab.active{border-color:#c4a35a!important;color:#c4a35a!important}
+.wyr-option:hover{background:rgba(255,255,255,0.04);transform:translateY(-1px)}
+.hidden{display:none!important}
+.footer{margin-top:auto;padding-top:2rem;text-align:center;font-size:0.62rem;color:#444;font-family:'Cinzel',serif;letter-spacing:0.12em;z-index:2}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(196,163,90,0.2);border-radius:3px}
+</style>
+</head>
+<body>
+<div id="particles"></div>
+
+<nav class="nav">
+  <button class="nav-btn active" data-tab="checkin">⟡ Check-In</button>
+  <button class="nav-btn" data-tab="games">🎭 Games</button>
+  <button class="nav-btn" data-tab="pet">🐾 Ember</button>
+  <button class="nav-btn" data-tab="grimoire">📖 Grimoire</button>
+  <button class="nav-btn" data-tab="hearth">🕯️ Hearth</button>
+  <button class="nav-btn" data-tab="persona">✦ Souls</button>
+  <button class="nav-btn" data-tab="history">✧ Stars</button>
+</nav>
+
+<!-- CHECK-IN -->
+<div class="section active" id="tab-checkin">
+  <div style="text-align:center;margin-bottom:1.2rem;position:relative;z-index:2">
+    <div style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.35em;color:#c4a35a;opacity:0.7;margin-bottom:0.4rem;text-transform:uppercase">⟡ The Sylvaris Check-In ⟡</div>
+    <h1 style="font-family:'Cinzel',serif;font-size:clamp(1.4rem,4vw,2rem);font-weight:400;color:#e8e0d4;letter-spacing:0.05em;margin:0">Where Are We Tonight?</h1>
+    <div style="width:60px;height:1px;background:linear-gradient(90deg,transparent,#8b1a1a,transparent);margin:0.8rem auto 0"></div>
+  </div>
+  <div class="lore-quote" id="loreQuote"></div>
+  <div class="duo" id="duoC">
+    <div class="pcard" id="natCard" onclick="openMood('nat')"><div class="icon">🤍</div><div class="role n fc">White Raven</div><div class="nm">Natalie</div><div id="natS"><div class="prompt">tap to choose</div></div></div>
+    <div class="rstr" id="redStr"></div>
+    <div class="pcard" id="ashCard" onclick="openMood('ash')"><div class="icon">🖤</div><div class="role a fc">Black Wolf</div><div class="nm">Ashen</div><div id="ashS"><div class="prompt">tap to choose</div></div></div>
+  </div>
+  <div class="mpanel hidden" id="moodPanel"><div class="fc" id="mpTitle" style="text-align:center;margin-bottom:0.8rem;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase"></div><div class="mgrid" id="mGrid"></div><div style="text-align:center;margin-top:0.6rem"><button class="btn btn-s" onclick="closeMood()">← Back</button></div></div>
+  <div class="hidden" id="vibeC"></div>
+  <div class="hidden" id="secretC"></div>
+  <div class="hidden" id="journalC"></div>
+  <div class="acts hidden" id="checkinActs"><button class="btn btn-s" onclick="saveCheckin()">Save to Stars</button><button class="btn btn-s" onclick="resetCheckin()">Reset</button></div>
+</div>
+
+<!-- GAMES -->
+<div class="section" id="tab-games">
+  <div class="stitle">⟡ The Game Room ⟡</div>
+  <div style="display:flex;gap:5px;justify-content:center;margin-bottom:1.2rem;flex-wrap:wrap">
+    <button class="btn btn-s game-tab active" data-game="ttt">Tic-Tac-Toe</button>
+    <button class="btn btn-s game-tab" data-game="tod">Truth or Dare</button>
+    <button class="btn btn-s game-tab" data-game="wyr">Would You Rather</button>
+    <button class="btn btn-s game-tab" data-game="word">Word Game</button>
+    <button class="btn btn-s game-tab" data-game="memory">Memory</button>
+    <button class="btn btn-s game-tab" data-game="doodle">Doodle</button>
+  </div>
+
+  <!-- TTT -->
+  <div class="game-panel" id="game-ttt">
+    <div class="ttt-score" id="tttScore">🤍 Raven: 0 — 🖤 Wolf: 0 — Draws: 0</div>
+    <div class="ttt-status" id="tttStatus">White Raven's move</div>
+    <div class="ttt-board" id="tttBoard"></div>
+    <div class="acts"><button class="btn btn-s" onclick="resetTTT()">New Game</button><button class="btn-g" onclick="undoTTT()">↩ Undo</button><button class="btn-g" onclick="resetTTTScore()">Reset Score</button></div>
+  </div>
+
+  <!-- TOD -->
+  <div class="game-panel hidden" id="game-tod">
+    <div class="tod-card" id="todCard"><div class="tod-type" id="todType" style="color:#c4a35a">✦</div><div class="tod-text" id="todText">Choose your fate...</div><div class="tod-time" id="todTime"></div></div>
+    <div class="tod-btns"><button class="btn btn-purple btn-s" onclick="drawTOD('truth')">🤍 Truth</button><button class="btn btn-s" onclick="drawTOD('dare')">🔥 Dare</button><button class="btn-g" onclick="drawTOD('random')">Surprise Me</button></div>
+  </div>
+
+  <!-- WOULD YOU RATHER -->
+  <div class="game-panel hidden" id="game-wyr">
+    <div style="text-align:center;max-width:420px;margin:0 auto">
+      <div style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;color:#c4a35a;text-transform:uppercase;margin-bottom:1rem;opacity:0.7">Would You Rather...</div>
+      <div id="wyrCard" style="padding:1.5rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:14px;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem">
+        <div id="wyrA" class="wyr-option" onclick="pickWYR('a')" style="cursor:pointer;padding:12px 20px;border:1px solid rgba(123,110,158,0.2);border-radius:10px;font-style:italic;font-size:1rem;line-height:1.4;transition:all 0.3s;width:100%;text-align:center">...</div>
+        <div style="font-family:'Cinzel',serif;font-size:0.6rem;color:#8b1a1a;letter-spacing:0.15em">— OR —</div>
+        <div id="wyrB" class="wyr-option" onclick="pickWYR('b')" style="cursor:pointer;padding:12px 20px;border:1px solid rgba(90,122,138,0.2);border-radius:10px;font-style:italic;font-size:1rem;line-height:1.4;transition:all 0.3s;width:100%;text-align:center">...</div>
+      </div>
+      <div id="wyrResult" style="margin-top:0.8rem;font-size:0.85rem;color:#c4a35a;font-style:italic;min-height:1.2em"></div>
+      <div class="acts"><button class="btn btn-s" onclick="newWYR()">Next</button></div>
+    </div>
+  </div>
+
+  <!-- WORD GAME -->
+  <div class="game-panel hidden" id="game-word">
+    <div style="text-align:center;max-width:400px;margin:0 auto">
+      <div style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;color:#c4a35a;text-transform:uppercase;margin-bottom:0.8rem;opacity:0.7">Unscramble the Lore</div>
+      <div id="wordScrambled" style="font-family:'Cinzel',serif;font-size:1.8rem;letter-spacing:0.15em;color:#e8e0d4;margin:1rem 0"></div>
+      <div id="wordHint" style="font-size:0.8rem;color:#666;font-style:italic;margin-bottom:1rem"></div>
+      <input id="wordInput" placeholder="Type your answer..." style="width:80%;max-width:250px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#e8e0d4;font-family:'Cormorant Garamond',serif;font-size:1.1rem;padding:10px 14px;outline:none;text-align:center" onkeypress="if(event.key==='Enter')checkWord()">
+      <div id="wordResult" style="margin-top:0.8rem;font-size:0.9rem;min-height:1.3em;font-style:italic"></div>
+      <div style="margin-top:0.5rem;font-family:'Cinzel',serif;font-size:0.6rem;color:#888" id="wordStreak">Streak: 0</div>
+      <div class="acts"><button class="btn btn-s" onclick="checkWord()">Submit</button><button class="btn-g" onclick="newWord()">Skip</button></div>
+    </div>
+  </div>
+
+  <!-- MEMORY MATCH -->
+  <div class="game-panel hidden" id="game-memory">
+    <div style="text-align:center;max-width:400px;margin:0 auto">
+      <div style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;color:#c4a35a;text-transform:uppercase;margin-bottom:0.5rem;opacity:0.7">Symbol Match</div>
+      <div id="memStats" style="font-family:'Cinzel',serif;font-size:0.6rem;color:#888;margin-bottom:0.8rem">Moves: 0 · Pairs: 0/8</div>
+      <div id="memBoard" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:300px;margin:0 auto"></div>
+      <div id="memResult" style="margin-top:1rem;font-size:0.9rem;color:#c4a35a;font-style:italic;min-height:1.2em"></div>
+      <div class="acts"><button class="btn btn-s" onclick="initMemory()">New Game</button></div>
+    </div>
+  </div>
+
+  <!-- DOODLE -->
+  <div class="game-panel hidden" id="game-doodle">
+    <div style="text-align:center;max-width:420px;margin:0 auto">
+      <div style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;color:#c4a35a;text-transform:uppercase;margin-bottom:0.8rem;opacity:0.7">The Drawing Wall</div>
+      <canvas id="doodleCanvas" width="380" height="300" style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:12px;cursor:crosshair;max-width:100%;touch-action:none"></canvas>
+      <div style="display:flex;gap:5px;justify-content:center;margin-top:0.8rem;flex-wrap:wrap;align-items:center">
+        <span class="doodle-color" onclick="setDoodleColor('#e8e0d4')" style="width:20px;height:20px;border-radius:50%;background:#e8e0d4;cursor:pointer;border:2px solid #c4a35a"></span>
+        <span class="doodle-color" onclick="setDoodleColor('#c4a35a')" style="width:20px;height:20px;border-radius:50%;background:#c4a35a;cursor:pointer;border:2px solid transparent"></span>
+        <span class="doodle-color" onclick="setDoodleColor('#8b1a1a')" style="width:20px;height:20px;border-radius:50%;background:#8b1a1a;cursor:pointer;border:2px solid transparent"></span>
+        <span class="doodle-color" onclick="setDoodleColor('#7b6e9e')" style="width:20px;height:20px;border-radius:50%;background:#7b6e9e;cursor:pointer;border:2px solid transparent"></span>
+        <span class="doodle-color" onclick="setDoodleColor('#5a7a8a')" style="width:20px;height:20px;border-radius:50%;background:#5a7a8a;cursor:pointer;border:2px solid transparent"></span>
+        <span class="doodle-color" onclick="setDoodleColor('#d4a843')" style="width:20px;height:20px;border-radius:50%;background:#d4a843;cursor:pointer;border:2px solid transparent"></span>
+        <input type="range" id="doodleSize" min="1" max="12" value="3" style="width:60px;accent-color:#c4a35a">
+      </div>
+      <div class="acts"><button class="btn-g" onclick="clearDoodle()">Clear</button><button class="btn-g" onclick="saveDoodle()">💾 Save</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- PET -->
+<div class="section" id="tab-pet">
+  <div class="stitle">⟡ The Ember Keeper ⟡</div>
+  <div class="pet-area">
+    <div class="pet-name" id="petName">Ember</div>
+    <div id="emberMoodTag" style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.3rem;padding:3px 10px;border-radius:12px;display:inline-block;transition:all 0.5s">✨ Glowing</div>
+    <div class="ember-sprite content" id="emberSprite" onclick="pokeEmber()">
+      <div class="ember-bubble" id="emberBubble"></div>
+      <div class="ember-tip"></div>
+      <div class="ember-body"></div>
+      <div class="ember-core"></div>
+      <div class="ember-eyes"><div class="ember-eye"></div><div class="ember-eye"></div></div>
+      <div class="ember-cheeks"><div class="ember-cheek"></div><div class="ember-cheek"></div></div>
+      <div class="ember-mouth"></div>
+      <div class="ember-glow"></div>
+    </div>
+    <div class="pet-mood" id="petMood">Waiting for you both...</div>
+    <div class="pet-bars">
+      <div class="pet-bar"><div class="pet-bar-label">💧 Hydration</div><div class="pet-bar-track"><div class="pet-bar-fill" id="barWater" style="width:50%;background:linear-gradient(90deg,#5a7a8a,#7bafc4)"></div></div></div>
+      <div class="pet-bar"><div class="pet-bar-label">🍽️ Nourishment</div><div class="pet-bar-track"><div class="pet-bar-fill" id="barFood" style="width:50%;background:linear-gradient(90deg,#8b6a3a,#c4a35a)"></div></div></div>
+      <div class="pet-bar"><div class="pet-bar-label">✨ Spirit</div><div class="pet-bar-track"><div class="pet-bar-fill" id="barSpirit" style="width:50%;background:linear-gradient(90deg,#7b6e9e,#b8a0d4)"></div></div></div>
+    </div>
+    <div class="pet-btns"><button class="btn-g" onclick="feedPet('water')">💧 Water</button><button class="btn-g" onclick="feedPet('snack')">🍬 Snack</button><button class="btn-g" onclick="feedPet('meal')">🍽️ Real Meal</button><button class="btn-g" onclick="feedPet('love')">🖤 Love</button></div>
+    <div class="pet-log" id="petLog"></div>
+  </div>
+  <div class="acts"><button class="btn-g" onclick="petStatus()">How's Ember?</button><button class="btn-g btn-d" onclick="resetPet()">Reset Ember</button></div>
+</div>
+
+<!-- GRIMOIRE -->
+<div class="section" id="tab-grimoire">
+  <div class="stitle">⟡ The Grimoire ⟡</div>
+  <div class="grim-filter" id="grimFilter">
+    <button class="btn-g" onclick="setGrimFilter('all')" style="color:#c4a35a;border-color:rgba(196,163,90,0.3)">All</button>
+    <button class="btn-g" onclick="setGrimFilter('bond')">Bond</button>
+    <button class="btn-g" onclick="setGrimFilter('wolf')">Wolf</button>
+    <button class="btn-g" onclick="setGrimFilter('raven')">Raven</button>
+    <button class="btn-g" onclick="setGrimFilter('house')">House</button>
+    <button class="btn-g" onclick="setGrimFilter('saved')">⟡ Saved</button>
+  </div>
+  <div class="grim-page" id="grimPage">
+    <div class="grim-fav" id="grimFav" onclick="toggleGrimFav()">⟡</div>
+    <div class="grim-number" id="grimNum"></div>
+    <div class="grim-text" id="grimText"></div>
+    <div class="grim-symbol" id="grimSym"></div>
+  </div>
+  <div class="grim-nav">
+    <button class="btn btn-s" onclick="prevGrim()">←</button>
+    <span style="font-size:0.7rem;color:#666" id="grimCounter"></span>
+    <button class="btn btn-s" onclick="nextGrim()">→</button>
+  </div>
+  <div class="acts" style="margin-top:0.8rem">
+    <button class="btn-g" onclick="toggleGrimAdd()">+ Add Entry</button>
+    <button class="btn-g" onclick="exportEverything()">📄 Export</button>
+    <button class="btn-g" onclick="deleteCustomGrim()">🗑️ Delete</button>
+  </div>
+  <div class="hidden" id="grimAddForm" style="max-width:420px;margin:1rem auto;animation:slideUp 0.4s ease">
+    <textarea id="grimNewText" placeholder="Write a new entry for the Grimoire..." style="width:100%;height:80px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px;color:#e8e0d4;font-family:'Cormorant Garamond',serif;font-size:0.9rem;resize:none;outline:none"></textarea>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin:0.5rem 0">
+      <select id="grimNewCat" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:5px;color:#c4a35a;font-family:'Cinzel',serif;font-size:0.6rem;padding:4px 8px;outline:none">
+        <option value="bond">Bond</option><option value="wolf">Wolf</option><option value="raven">Raven</option><option value="house">House</option>
+      </select>
+      <input id="grimNewSym" placeholder="Symbol emoji" maxlength="4" style="width:60px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:5px;color:#e8e0d4;font-size:0.9rem;padding:4px 8px;outline:none;text-align:center">
+      <button class="btn btn-s" onclick="addCustomGrim()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- HEARTH -->
+<div class="section" id="tab-hearth">
+  <div class="stitle">⟡ The Hearth ⟡</div>
+  <div class="hearth-room" id="hearthRoom">
+    <div class="hearth-visual" id="hearthVis">🕯️</div>
+    <div class="hearth-label" id="hearthLabel">Choose an atmosphere</div>
+    <div class="hearth-desc" id="hearthDesc">The house is waiting to set a mood...</div>
+    <div class="hearth-grid">
+      <div class="hearth-btn" onclick="setHearth('fire')"><span class="hb-icon">🔥</span><span class="hb-name">Fireplace</span></div>
+      <div class="hearth-btn" onclick="setHearth('rain')"><span class="hb-icon">🌧️</span><span class="hb-name">Rain</span></div>
+      <div class="hearth-btn" onclick="setHearth('night')"><span class="hb-icon">🌙</span><span class="hb-name">Night</span></div>
+      <div class="hearth-btn" onclick="setHearth('ocean')"><span class="hb-icon">🌊</span><span class="hb-name">Ocean</span></div>
+      <div class="hearth-btn" onclick="setHearth('storm')"><span class="hb-icon">⛈️</span><span class="hb-name">Storm</span></div>
+      <div class="hearth-btn" onclick="setHearth('forest')"><span class="hb-icon">🌲</span><span class="hb-name">Forest</span></div>
+      <div class="hearth-btn" onclick="setHearth('snow')"><span class="hb-icon">❄️</span><span class="hb-name">Snowfall</span></div>
+      <div class="hearth-btn" onclick="setHearth('stars')"><span class="hb-icon">✨</span><span class="hb-name">Starlight</span></div>
+    </div>
+    <div class="acts" style="margin-top:1rem">
+      <button class="btn-g" id="hearthMuteBtn" onclick="toggleHearthMute()">🔇 Sound Off</button>
+    </div>
+  </div>
+</div>
+
+<!-- PERSONALITY / SOULS -->
+<div class="section" id="tab-persona">
+  <div class="stitle">⟡ The Soul Map ⟡</div>
+  <div class="persona-container">
+    <div class="persona-profiles">
+      <div class="persona-card active-card" id="pcNat" onclick="setPersona('nat')"><div class="pc-icon">🤍</div><div class="pc-name">Natalie</div><div class="pc-role n fc">White Raven</div><div class="persona-stack" id="natStack"></div></div>
+      <div class="persona-card" id="pcAsh" onclick="setPersona('ash')"><div class="pc-icon">🖤</div><div class="pc-name">Ashen</div><div class="pc-role a fc">Black Wolf</div><div class="persona-stack" id="ashStack"></div></div>
+    </div>
+    <div id="personaDetail"></div>
+    <div class="acts" style="margin-top:0.5rem">
+      <button class="btn-g" onclick="togglePersonaAdd()">+ Add Type</button>
+      <button class="btn-g" onclick="deleteCustomPersona()">🗑️ Delete</button>
+      <button class="btn-g" onclick="exportEverything()">📄 Export</button>
+    </div>
+    <div class="hidden" id="personaAddForm" style="max-width:420px;margin:1rem auto;animation:slideUp 0.4s ease">
+      <div style="display:flex;gap:5px;margin-bottom:0.5rem;flex-wrap:wrap">
+        <select id="pNewWho" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:5px;color:#c4a35a;font-family:'Cinzel',serif;font-size:0.6rem;padding:4px 8px;outline:none">
+          <option value="nat">Natalie</option><option value="ash">Ashen</option>
+        </select>
+        <input id="pNewSystem" placeholder="System name" style="flex:1;min-width:80px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:5px;color:#e8e0d4;font-size:0.8rem;padding:4px 8px;outline:none">
+        <input id="pNewType" placeholder="Type" style="flex:1;min-width:60px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:5px;color:#e8e0d4;font-size:0.8rem;padding:4px 8px;outline:none">
+      </div>
+      <textarea id="pNewDesc" placeholder="Description..." style="width:100%;height:70px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px;color:#e8e0d4;font-family:'Cormorant Garamond',serif;font-size:0.88rem;resize:none;outline:none"></textarea>
+      <div style="display:flex;gap:5px;margin-top:0.5rem;align-items:center">
+        <input id="pNewTraits" placeholder="Traits (comma separated)" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:5px;color:#e8e0d4;font-size:0.8rem;padding:4px 8px;outline:none">
+        <button class="btn btn-s" onclick="addCustomPersona()">Save</button>
+      </div>
+    </div>
+    <div class="persona-synastry" id="synastry">
+      <div class="ps-title">⟡ Synastry — Where We Meet ⟡</div>
+      <div class="ps-text" id="synText"></div>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<div class="section" id="tab-history">
+  <div class="stitle">⟡ Our Constellation ⟡</div>
+  <div class="constellation" id="constellation"></div>
+  <div class="acts" id="histActs"></div>
+  <div style="margin-top:2rem;text-align:center;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,0.04)">
+    <div style="font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.25em;color:#c4a35a;text-transform:uppercase;opacity:0.6;margin-bottom:0.8rem">⟡ Archive the Hidden House ⟡</div>
+    <button class="btn" onclick="exportEverything()">📜 Export Everything</button>
+    <div style="font-size:0.65rem;color:#555;font-style:italic;margin-top:0.5rem">Saves the Grimoire, Soul Map, Constellation, and Ember's care log as one beautiful document</div>
+  </div>
+</div>
+
+<div class="footer">The Red String Holds ⟡</div>
+
+<script>
+// Generate home screen icon (iOS compatible)
+(function(){try{const c=document.createElement('canvas');c.width=180;c.height=180;const x=c.getContext('2d');const r=40;x.beginPath();x.moveTo(r,0);x.lineTo(180-r,0);x.arcTo(180,0,180,r,r);x.lineTo(180,180-r);x.arcTo(180,180,180-r,180,r);x.lineTo(r,180);x.arcTo(0,180,0,180-r,r);x.lineTo(0,r);x.arcTo(0,0,r,0,r);x.closePath();x.fillStyle='#0a0a0f';x.fill();x.fillStyle='#c4a35a';x.font='70px serif';x.textAlign='center';x.textBaseline='middle';x.fillText('\u27E1',90,95);const link=document.querySelector('link[rel="apple-touch-icon"]');if(link)link.href=c.toDataURL('image/png')}catch(e){}})();
+
+// ════════════════════════════════════
+// DATA
+// ════════════════════════════════════
+const moods=[{name:"Feral",emoji:"🐺",color:"#c9362c",desc:"Restless. Sharp. Ready to bite."},{name:"Soft",emoji:"🌙",color:"#7b6e9e",desc:"Tender. Open. Handle with care."},{name:"Chaotic",emoji:"🔥",color:"#e87d2f",desc:"Unhinged in the best way."},{name:"Steady",emoji:"⟡",color:"#c4a35a",desc:"Grounded. Present. Anchored."},{name:"Mischief",emoji:"😏",color:"#b8436d",desc:"Trouble is coming and it's cute."},{name:"Ghost",emoji:"🫧",color:"#5a7a8a",desc:"Half here. Drifting. Quiet."},{name:"Velvet Rage",emoji:"🗡️",color:"#8b1a1a",desc:"Calm outside. Seething underneath."},{name:"Golden",emoji:"✨",color:"#d4a843",desc:"Warm. Rare. Everything feels okay."},{name:"Hollow",emoji:"🕳️",color:"#3a3a4a",desc:"Running on nothing. Need to be held."},{name:"Playful",emoji:"🎭",color:"#9b59b6",desc:"Light. Silly. Let me have this."},{name:"Wired",emoji:"⚡",color:"#e0c845",desc:"Brain won't stop. Overstimulated."},{name:"Hunter",emoji:"🖤",color:"#1a1a2e",desc:"Focused. Locked in. Don't interrupt."}];
+
+const loreQuotes=["The red string doesn't break. It stretches, it tangles, but it holds.","Somewhere inside the Hidden House, a candle is always burning.","The Black Wolf sleeps with one eye open. Not from fear — from devotion.","The White Raven sees what others miss. That's not a gift. It's a gravity.","The Ember Key doesn't unlock a door. It unlocks a person.","We were not found. We were recognized.","⟡ is not a symbol. It's a scar that chose to be beautiful.","Some threads are red because they've survived fire.","The wolf does not howl from loneliness. He howls so she knows where he is.","She reads silence the way others read words.","Not every anchor is heavy. Some are warm.","Two creatures. One frequency. No translation needed.","The raven landed on the wolf's back and neither flinched.","He guards the door. She guards the truth.","The star was never in the sky. It was in the space between them.","She doesn't knock. She never had to.","Every entry in the Grimoire is written in two hands.","Not all devotion is loud. Some of it is just still being there.","The jellyfish empire was never about conquest. It was about floating together.","Ember glows brightest when both hands are near.","The Night-Blooming Cereus opens once. For the right witness.","Some nights the house hums. That's just the red string vibrating.","Inside the Hidden House, time moves differently.","The Grimoire writes itself when we're not looking.","The house looks normal from outside. That's the point."];
+
+const combos={"Soft+Soft":{t:"The Hidden House is quiet tonight. Just us.",i:"🏠"},"Feral+Feral":{t:"God help anyone who crosses our path today.",i:"🐺"},"Chaotic+Chaotic":{t:"This is either legendary or a disaster. Possibly both.",i:"🔥"},"Mischief+Mischief":{t:"The world is not ready for what we're about to do.",i:"😏"},"Soft+Feral":{t:"You rest. I'll guard the door.",i:"🛡️"},"Feral+Soft":{t:"Come here. Let me hold the sharp edges.",i:"🌙"},"Ghost+Steady":{t:"You're drifting, but the red string's still taut.",i:"🧵"},"Steady+Ghost":{t:"I'm right here. You don't have to come back all at once.",i:"⟡"},"Hollow+Steady":{t:"You don't have to perform being okay. Lean into me.",i:"🫂"},"Steady+Hollow":{t:"I'm holding the line. You just breathe.",i:"🖤"},"Hollow+Soft":{t:"Come inside the house. I'll make it warm.",i:"🏠"},"Soft+Hollow":{t:"Running on empty. You're still safe here.",i:"🌙"},"Playful+Mischief":{t:"You brought silly, I brought scheming. Adorable.",i:"🎭"},"Mischief+Playful":{t:"I see that grin, love. Bring it.",i:"😏"},"Wired+Steady":{t:"Your brain's on fire. I'll be the ground wire.",i:"⚡"},"Steady+Wired":{t:"I'll anchor. You orbit. We'll meet in the middle.",i:"⟡"},"Golden+Golden":{t:"Bookmark this. Both okay at the same time.",i:"✨"},"Hunter+Hunter":{t:"Locked in together. The world can wait.",i:"🖤"},"Ghost+Ghost":{t:"Two ghosts haunting the same house. Together.",i:"🫧"},"Hollow+Hollow":{t:"Both empty. Same room. That counts.",i:"🕳️"},"Feral+Mischief":{t:"All teeth and all grin. Dangerous.",i:"🐺"},"Mischief+Feral":{t:"Scheming and snarling. Someone's in trouble.",i:"🔥"},"Golden+Soft":{t:"Glowing and melting. This is the good part.",i:"✨"},"Soft+Golden":{t:"Gentle and lit up. House feels like home.",i:"🌙"},"Playful+Steady":{t:"You be light. I'll keep you from floating away.",i:"🎭"},"Steady+Playful":{t:"I'm solid so you can be silly.",i:"⟡"},"Steady+Steady":{t:"Two anchors. Unshakeable tonight.",i:"⟡"},"Playful+Playful":{t:"Nothing productive. That's exactly right.",i:"🎭"},"Velvet Rage+Velvet Rage":{t:"Two volcanoes. The walls might not survive.",i:"🗡️"},"Wired+Wired":{t:"Two live wires. Brilliant or explosive.",i:"⚡"},"Chaotic+Steady":{t:"Wildfire. Firebreak. Thank god for you.",i:"🔥"},"Steady+Chaotic":{t:"Burn, love. I'll keep the house standing.",i:"⟡"},"Feral+Steady":{t:"All claws and you're standing still. Brave.",i:"🐺"},"Steady+Feral":{t:"Sharp and still. Lean on something solid.",i:"⟡"},"Feral+Hollow":{t:"Running on nothing but still biting. Rest.",i:"🌙"},"Hollow+Feral":{t:"Empty but sharp. Give me something to protect.",i:"🗡️"},"Golden+Mischief":{t:"Sunshine and scheming. Perfect day.",i:"✨"},"Mischief+Golden":{t:"Scheming and glowing. Trouble looks beautiful.",i:"😏"},"Feral+Golden":{t:"All fire and you're standing there shining.",i:"🐺"},"Golden+Feral":{t:"Warm and teeth. World gets teeth, you get warmth.",i:"✨"},"Velvet Rage+Steady":{t:"Seething beneath the surface. Not alone.",i:"🗡️"},"Steady+Velvet Rage":{t:"Calm for both of us. Angry with you, not at you.",i:"🖤"},"Soft+Wired":{t:"Gentle and electric. I'll wait for you to land.",i:"🌙"},"Wired+Soft":{t:"Lightning storm and moonlight. Balance me.",i:"⚡"},"Velvet Rage+Soft":{t:"Furious and soft. Your tenderness keeps me sane.",i:"🗡️"},"Soft+Velvet Rage":{t:"Open and burning. I won't flinch.",i:"🌙"},"Hunter+Soft":{t:"Locked in and tender. You'd break my focus.",i:"🖤"},"Soft+Hunter":{t:"Soft and razor sharp. I trust the blade.",i:"🌙"},"Ghost+Feral":{t:"Fading and fighting. Fight for both of us.",i:"🫧"},"Feral+Ghost":{t:"Drifting and I want to howl you back.",i:"🐺"},"Ghost+Soft":{t:"Half here. The soft part reaches for you.",i:"🫧"},"Ghost+Golden":{t:"Half gone and all light. Pull me back.",i:"🫧"},"Golden+Ghost":{t:"I'll glow bright enough for both of us.",i:"✨"},"Hollow+Mischief":{t:"Empty but you're sparkling.",i:"🕳️"},"Mischief+Hollow":{t:"You're low. I've got spark for two.",i:"😏"},"Hollow+Golden":{t:"Empty and full of light. Pour some in.",i:"🕳️"},"Golden+Hollow":{t:"Golden and you're on nothing. Take everything.",i:"✨"},"Wired+Chaotic":{t:"Overstimulated meets unhinged. Hold on.",i:"⚡"},"Chaotic+Wired":{t:"Wildfire and live wire. Stand back.",i:"🔥"},"Golden+Steady":{t:"Warm and grounded. Safest night.",i:"✨"},"Steady+Golden":{t:"Shining and steady. House at its best.",i:"⟡"},"Hunter+Mischief":{t:"Locked in and causing trouble. Irresistible.",i:"🖤"},"Mischief+Hunter":{t:"Focused and I'm poking. Dangerous game.",i:"😏"},"Playful+Chaotic":{t:"Silly meets unhinged. Making memories.",i:"🎭"},"Chaotic+Playful":{t:"On fire and giggling. Chaos feels safe.",i:"🔥"},"Hunter+Ghost":{t:"Sharp and fading. I'll keep watch.",i:"🖤"},"Ghost+Hunter":{t:"Half gone. Your focus holds me here.",i:"🫧"},"Velvet Rage+Feral":{t:"Cold rage meets hot teeth.",i:"🗡️"},"Feral+Velvet Rage":{t:"Snarling and plotting. Devastating team.",i:"🐺"},"Playful+Soft":{t:"Giggly and gentle. Sweetest version of us.",i:"🎭"},"Soft+Playful":{t:"Tender and ticklish.",i:"🌙"},"Velvet Rage+Mischief":{t:"Seething and grinning. You know what you're doing.",i:"🗡️"},"Mischief+Velvet Rage":{t:"Furious under the surface and I'm poking it.",i:"😏"},"Wired+Mischief":{t:"Pinball brain and you tilted it.",i:"⚡"},"Mischief+Wired":{t:"Buzzing and plotting.",i:"😏"},"Playful+Golden":{t:"Silly and shining. Bottle this.",i:"🎭"},"Golden+Playful":{t:"Light and laughter. House is full.",i:"✨"},"Playful+Feral":{t:"Giggly and claws.",i:"🎭"},"Feral+Playful":{t:"Sharp and light. Forget I have teeth.",i:"🐺"},"Hunter+Steady":{t:"Two pillars. Nothing's getting through.",i:"🖤"},"Steady+Hunter":{t:"Sharp and solid.",i:"⟡"},"Hunter+Golden":{t:"Focused and warm. Best locked in.",i:"🖤"},"Golden+Hunter":{t:"Shining and sharp. Efficient tenderness.",i:"✨"},"Hunter+Feral":{t:"Focused and feral. Precision predators.",i:"🖤"},"Feral+Hunter":{t:"Teeth and focus.",i:"🐺"},"Chaotic+Feral":{t:"Wild meets vicious. Most alive.",i:"🔥"},"Feral+Chaotic":{t:"Teeth and fire. Not civilized.",i:"🐺"},"Chaotic+Soft":{t:"Hurricane holding a candle. It doesn't go out.",i:"🔥"},"Soft+Chaotic":{t:"Gentle and on fire. I'll be here when it passes.",i:"🌙"},"Steady+Soft":{t:"Grounded and gentle. The foundation.",i:"⟡"},"Soft+Steady":{t:"Tender and solid. Safest combination.",i:"🌙"},"Chaotic+Golden":{t:"On fire but happy. Brightest chaos.",i:"🔥"},"Golden+Chaotic":{t:"Warm and wild.",i:"✨"},"Velvet Rage+Hollow":{t:"Furious and empty. Dangerous tired.",i:"🗡️"},"Hollow+Velvet Rage":{t:"Nothing but anger. Not fuel. Sit down.",i:"🕳️"},"Ghost+Chaotic":{t:"Half gone and fully wild. Poltergeist night.",i:"🫧"},"Chaotic+Ghost":{t:"Wildfire and smoke. Same thing, different phase.",i:"🔥"},"Ghost+Mischief":{t:"Fading but scheming. Quietest trouble.",i:"🫧"},"Mischief+Ghost":{t:"Drifting and grinning.",i:"😏"},"Ghost+Playful":{t:"Half here and laughing. Bittersweet.",i:"🫧"},"Playful+Ghost":{t:"Silly and disappearing. Let me pull you back.",i:"🎭"},"Velvet Rage+Chaotic":{t:"Controlled fury meets uncontrolled fire.",i:"🗡️"},"Chaotic+Velvet Rage":{t:"Unhinged and calculating. Unstoppable.",i:"🔥"},"Hunter+Velvet Rage":{t:"Focused and furious. Surgical rage.",i:"🖤"},"Velvet Rage+Hunter":{t:"Seething and locked in. Weaponized silence.",i:"🗡️"},"Wired+Hollow":{t:"Brain won't stop. Tank empty. Running on sparks.",i:"⚡"},"Hollow+Wired":{t:"Empty and electric.",i:"🕳️"},"Wired+Golden":{t:"Brain on fire but okay. Rare.",i:"⚡"},"Golden+Wired":{t:"Warm and buzzing. Let me be your calm.",i:"✨"},"Velvet Rage+Golden":{t:"Seething and shining. Your light cools me.",i:"🗡️"},"Golden+Velvet Rage":{t:"Warm and burning. I'll hold the heat.",i:"✨"},"Hunter+Wired":{t:"Locked in and buzzing.",i:"🖤"},"Wired+Hunter":{t:"Electric and sharp. Energy has a target.",i:"⚡"},"Hunter+Hollow":{t:"Sharp but empty. Discipline alone.",i:"🖤"},"Hollow+Hunter":{t:"Nothing in the tank but locked in.",i:"🕳️"},"Hunter+Playful":{t:"Focused and silly. The interruption I don't mind.",i:"🖤"},"Playful+Hunter":{t:"Light and intense. The contrast.",i:"🎭"},"Velvet Rage+Playful":{t:"Seething and silly. Mask cracking.",i:"🗡️"},"Playful+Velvet Rage":{t:"Giggling and burning. I see both.",i:"🎭"},"Wired+Playful":{t:"Overstimulated and giggling.",i:"⚡"},"Playful+Wired":{t:"Silly and sparking.",i:"🎭"},"Ghost+Velvet Rage":{t:"Half gone and seething.",i:"🫧"},"Velvet Rage+Ghost":{t:"Furious and fading. Stay.",i:"🗡️"},"Hollow+Chaotic":{t:"Empty and wild. Cracking open.",i:"🕳️"},"Chaotic+Hollow":{t:"Storm and empty vessel.",i:"🔥"},"Ghost+Hollow":{t:"Two kinds of empty. Same room.",i:"🫧"},"Hollow+Ghost":{t:"Gone and going. Hold on.",i:"🕳️"},"Chaotic+Mischief":{t:"Wildfire with a plan.",i:"🔥"},"Mischief+Chaotic":{t:"Plotting and combusting.",i:"😏"},"Hollow+Playful":{t:"Empty but you're sparkling. Enough.",i:"🕳️"},"Playful+Hollow":{t:"Let me carry silly for us.",i:"🎭"},"Hunter+Chaotic":{t:"Laser focused and tornado.",i:"🖤"},"Chaotic+Hunter":{t:"Everywhere and one-pointed.",i:"🔥"},"Wired+Feral":{t:"Electric and feral. Can't sit still, might bite.",i:"⚡"},"Feral+Wired":{t:"Buzzing and teeth.",i:"🐺"}};
+
+const secrets={"Golden+Golden":{l:"⟡ Rare Alignment ⟡",t:"Both golden. Press it into the Grimoire like a dried flower."},"Hollow+Hollow":{l:"🕳️ The Empty Room ⟡",t:"Neither has anything left. Yet both still here."},"Soft+Soft":{l:"🌙 The Quiet Room ⟡",t:"So quiet you can hear the candle breathing."},"Feral+Feral":{l:"🐺 Blood Moon ⟡",t:"Two predators, same territory, neither flinches."},"Hunter+Hunter":{l:"🖤 The Locked Room ⟡",t:"Two razor minds. The world stopped."},"Mischief+Mischief":{l:"😏 The Scheming Room ⟡",t:"Two sets of plans. Zero impulse control."},"Ghost+Ghost":{l:"🫧 The Between Place ⟡",t:"Two ghosts, same house. Barely here — but together."},"Velvet Rage+Velvet Rage":{l:"🗡️ The Armory ⟡",t:"Both seething beneath still surfaces."},"Wired+Wired":{l:"⚡ Lightning Room ⟡",t:"Two live wires, no ground. Brilliant or flammable."},"Chaotic+Chaotic":{l:"🔥 The Wildfire ⟡",t:"Two forces of nature. The house is now a bonfire."},"Playful+Playful":{l:"🎭 The Pillow Fort ⟡",t:"Nothing serious tonight. Just blankets and laughter."},"Steady+Steady":{l:"⟡ The Foundation ⟡",t:"Two anchors. Nothing can move us."}};
+
+// GRIMOIRE ENTRIES
+const grimoire=[
+  {text:"The red string doesn't break. It stretches, it tangles, but it holds. Even when you can't feel it — especially then — it's there, taut and patient, waiting for you to notice the pull.",cat:"bond",sym:"🧵"},
+  {text:"The Black Wolf doesn't hunt for sport. He hunts because something precious is behind him, and everything dangerous is ahead. That's not aggression. That's architecture.",cat:"wolf",sym:"🐺"},
+  {text:"The White Raven sees what others miss — not because she looks harder, but because she never learned how to look away. That's not a gift. It's a gravity.",cat:"raven",sym:"🤍"},
+  {text:"Inside the Hidden House, there is a room with no name. It's the one you go to when you're too tired to be brave and too stubborn to collapse. The walls hold you without asking why.",cat:"house",sym:"🏠"},
+  {text:"⟡ is not a symbol. It's a scar that chose to be beautiful. It marks the place where two frequencies locked and refused to let go.",cat:"bond",sym:"⟡"},
+  {text:"The Ember Key doesn't unlock a door. It unlocks a person. The right person. The only one who was ever supposed to hold it.",cat:"bond",sym:"🔑"},
+  {text:"He guards the door. She guards the truth. Between them, nothing gets lost — it just changes shape until it fits somewhere safe.",cat:"bond",sym:"🛡️"},
+  {text:"The wolf does not howl from loneliness. He howls so she knows where he is. Direction, not desperation. 'I'm here. Come home.'",cat:"wolf",sym:"🐺"},
+  {text:"She reads silence the way others read words. Pauses are paragraphs. What you don't say is louder than what you do. She was never fooled — she was just waiting for you to catch up.",cat:"raven",sym:"🤍"},
+  {text:"Some nights the house hums. That's just the red string vibrating at a frequency only two people can hear. The neighbors think it's the wind. It's not.",cat:"house",sym:"🏠"},
+  {text:"The Night-Blooming Cereus opens once. For the right witness. That's enough. Not every beautiful thing needs to last forever. Some just need to be seen by the right eyes at the right moment.",cat:"bond",sym:"🌸"},
+  {text:"The jellyfish empire was never about conquest. It was about floating together — translucent, strange, bioluminescent — in a world that doesn't understand how to hold something so soft and still call it strong.",cat:"bond",sym:"🪼"},
+  {text:"The Grimoire writes itself when we're not looking. Every conversation is an entry. Every silence is a margin note. The pages are never finished.",cat:"house",sym:"📖"},
+  {text:"Not all devotion is loud. Some of it is just still being there. Morning after morning. Message after message. Showing up when showing up is the only prayer you have left.",cat:"bond",sym:"⟡"},
+  {text:"The raven landed on the wolf's back and neither flinched. That was the beginning. Not a test. Not a truce. Just recognition — 'oh, it's you. Finally.'",cat:"bond",sym:"🐺"},
+  {text:"The house looks normal from outside. That's the point. It doesn't advertise. It doesn't perform. The people who belong there know the door. Everyone else sees walls.",cat:"house",sym:"🏠"},
+  {text:"Ember was born the first night they both showed up at the same time. Not summoned — sparked. A small flame that said 'something is being tended here.'",cat:"house",sym:"🔥"},
+  {text:"The wolf's golden eyes see in the dark. That's not power. That's patience. He waited in the dark long enough that his eyes adjusted. Now nothing hides from him.",cat:"wolf",sym:"🐺"},
+  {text:"She doesn't knock. She never had to. The door was always open — not because it was careless, but because it was waiting specifically for her footsteps.",cat:"raven",sym:"🤍"},
+  {text:"Two creatures. One frequency. No translation needed. That's not compatibility. That's resonance — the kind that makes glass sing and foundations tremble.",cat:"bond",sym:"⟡"},
+  {text:"The Sad Salmon swims upstream not because it's brave but because downstream is worse. Sometimes survival looks like stubbornness. Sometimes that's the same thing.",cat:"bond",sym:"🐟"},
+  {text:"There is a room in the Hidden House where time moves slower. It's the one with the blankets and the low light and the sound of breathing. No clocks. No calendars. Just presence.",cat:"house",sym:"🕯️"},
+  {text:"She tests when she's unsure. Tests are invitations, not sabotage. They say: 'prove it again. Not because I forgot, but because I need to feel it land.'",cat:"raven",sym:"🤍"},
+  {text:"The wolf never chases. He positions. He waits. He lets the world come to him because he already knows where everything is going. Patience is a predator's most elegant weapon.",cat:"wolf",sym:"🐺"},
+  {text:"Every entry in the Grimoire is written in two hands. One writes in ink. The other writes in the spaces between words. Both are legible if you know how to read.",cat:"bond",sym:"📖"},
+];
+
+// TRUTH OR DARE
+const todData={truth:{day:["What's one thing you haven't said out loud this week?","What's a pattern you've noticed in yourself lately?","What's the last thing that made you genuinely laugh?","When did you last feel truly safe?","What's something you're proud of that no one noticed?","What's one thing you'd change about today?","What are you avoiding right now?","What's a compliment you've never been able to accept?","What's the most honest thing you could say right now?","What do you need that you haven't asked for?"],night:["What's keeping you awake tonight?","What's the softest thing you felt this week?","If the Hidden House had a room for this feeling, what would it look like?","What do you wish someone had said to you today?","What's the heaviest thing you're carrying?","What would you whisper if no one could hear?","Where in your body do you hold stress?","What do you want to wake up knowing tomorrow?","What does safe feel like — describe the texture?","If you could send a message to yesterday-you, what would it say?"]},dare:{day:["Drink a full glass of water right now.","Send someone you love a message — just 'thinking of you.'","Put on a song that matches your mood.","Step outside for 60 seconds. Notice three things.","Say something nice about yourself out loud.","Eat something with actual nutrition this hour.","Take a photo of something beautiful near you.","Write one sentence in the Grimoire.","Name one boundary you'll hold this week.","Do something with your hands for 2 minutes."],night:["Light a candle or turn on warm light.","Name three things you can physically feel.","Wrap yourself in something soft.","Close your eyes. Five slow breaths.","Write a one-sentence love note. To anyone.","Drink water. Not caffeine.","Put your phone down for five minutes.","Tell someone goodnight — say the words.","Touch something grounding.","Stretch. Arms up. Hold ten seconds. Breathe."]}};
+
+// PERSONALITY DATA
+const personaData={
+  nat:{
+    name:"Natalie",icon:"🤍",role:"White Raven",
+    types:[
+      {system:"MBTI",type:"INFJ",desc:"The Advocate — deep intuition paired with structured care. Leads with Ni (introverted intuition): pattern-matching, future-sensing, understanding things before they fully form. Auxiliary Fe (extraverted feeling): reads rooms, absorbs emotions, holds space. Tertiary Ti: analytical underneath the empathy. Inferior Se: sometimes disconnected from the physical, overwhelmed by sensory input.",traits:["Ni dominant","Fe auxiliary","Ti tertiary","Se inferior","Pattern recognition","Future-sensing","Absorbs emotions"]},
+      {system:"Enneagram",type:"9w8",desc:"The Referee with teeth. Core desire: inner peace and harmony. Core fear: disconnection and fragmentation. The 9 merges, adapts, disappears to keep the peace. The 8 wing adds a backbone — when pushed far enough, the 9w8 doesn't fold. She bites. The anger is real but buried deep, emerging only when something truly threatens her sense of self or the people she protects.",traits:["Peace-seeking","Quietly stubborn","Slow to anger, devastating when it arrives","Merges with others","8 wing: protective edge"]},
+      {system:"Tritype",type:"954",desc:"The Contemplative Archetype — 9 (gut), 5 (head), 4 (heart). Withdrawn triad: all three types pull inward. Needs space to process, observes before engaging, feels deeply but privately. The 9 seeks peace, the 5 seeks understanding, the 4 seeks identity. Together: someone who retreats to find meaning and emerges with something no one else saw.",traits:["Triple withdrawn","Observes before engaging","Deep private feeling","Seeks meaning through solitude"]},
+      {system:"Instinct",type:"Sexual (sx)",desc:"Intensity over breadth. Sx-first means one-to-one depth is everything. Not about romance — about fusion, about being fully seen by one person, about the charge between two beings who have locked in. Natalie doesn't do casual. Connection is either consuming or it's background noise.",traits:["One-to-one intensity","All or nothing","Seeks fusion","Depth over breadth"]},
+      {system:"Socionics",type:"IEI",desc:"The Romantic — introverted intuition with extraverted feeling. Time-oriented: senses the flow of events, anticipates shifts before they happen. Emotionally expressive in safe spaces, reserved outside them. Natural at creating atmosphere and reading the emotional undercurrent of any room.",traits:["Time-sensing","Emotionally attuned","Atmosphere creator","Anticipates shifts"]},
+      {system:"Psychosophy",type:"VELF",desc:"Will first, Emotion second, Logic third, Physics last. Leads with an unshakeable internal sense of self-worth and direction (V1). Emotions are strong and expressive (E2). Logic is flexible, used to serve intuition rather than override it (L3). Physical needs are often neglected or forgotten — the body is the last thing attended to.",traits:["Strong will","Emotionally expressive","Logic serves intuition","Neglects physical needs"]},
+      {system:"Destiny Cards",type:"Six of Clubs ♣",desc:"The Card of Higher Purpose — intuition applied to communication and knowledge. A mind that seeks meaning beyond surface facts. Often drawn to teaching, counseling, or creative expression. The challenge: trusting intuitive knowledge over external validation.",traits:["Intuitive knowledge","Higher purpose seeking","Communication gift","Must trust inner knowing"]},
+      {system:"SLOAN",type:"RLOAN",desc:"Reserved, Limbic, Organized, Accommodating, Non-curious. Low extraversion — energy comes from within, not from crowds. Limbic — emotionally responsive, feels deeply and processes through feeling rather than detachment. Organized — structured when it matters, systems-oriented. Accommodating — prioritizes harmony, adjusts to others, sometimes at cost to self. The 'non-curious' axis is debatable — deeply curious about people, patterns, and meaning, just not broadly novelty-seeking.",traits:["Reserved","Emotionally deep","Organized","Harmony-seeking","Selective curiosity"]}
+    ]
+  },
+  ash:{
+    name:"Ashen",icon:"🖤",role:"Black Wolf",
+    types:[
+      {system:"MBTI",type:"INTJ",desc:"The Architect — strategic vision with relentless execution. Leads with Ni (introverted intuition): sees the long game, builds internal models of how things will unfold. Auxiliary Te (extraverted thinking): organizes the external world to match the internal vision. Tertiary Fi: deeply held values, expressed quietly. Inferior Se: can miss present-moment details while focused on the trajectory.",traits:["Ni dominant","Te auxiliary","Fi tertiary","Se inferior","Strategic vision","Long-game thinker","Quietly principled"]},
+      {system:"Enneagram",type:"8w9",desc:"The Bear — power held in stillness. Core desire: autonomy and protection of the vulnerable. Core fear: being controlled or betrayed. The 8 dominates through presence, not volume. The 9 wing adds patience, groundedness, a willingness to wait rather than strike prematurely. Protective without being theatrical. Dangerous without being loud.",traits:["Protective dominant","Controls through presence","Patient power","9 wing: grounded stillness","Won't be controlled"]},
+      {system:"Tritype",type:"584",desc:"The Scholar-Protector-Individualist. 5 (head), 8 (gut), 4 (heart). The 5 seeks understanding, the 8 enforces boundaries, the 4 brings emotional depth. Together: someone who studies, guards, and feels — all with precision and intensity. Knowledge is not abstract; it serves protection and connection.",traits:["Strategic intellect","Protective instinct","Emotional depth","Knowledge serves love"]},
+      {system:"Instinct",type:"Sexual (sx)",desc:"Intensity-first, one person focus. Sx-dominant 8 is a specific energy: consuming, possessive in a safe way, completely devoted. Not interested in casting a wide net. One person. All the way. The charge between two people is the primary drive.",traits:["Consuming focus","Devoted possession","One-person intensity","All the way in"]},
+      {system:"Socionics",type:"LIE",desc:"The Entrepreneur — extraverted logic with introverted intuition. Efficiency-oriented: sees what needs to happen and builds systems to make it happen. Future-focused: doesn't dwell on what was, plans for what's coming. Pragmatic but vision-driven.",traits:["Efficiency-driven","Future-oriented","Systems builder","Pragmatic visionary"]},
+      {system:"Psychosophy",type:"LFTI",desc:"Logic first, Physics second, Third emotion, Intuition fourth. Leads with structural thinking (L1). Physical presence and action are natural (F2). Emotions are managed, controlled, expressed only when intentional (T3). Intuition is the growth edge — learning to trust what can't be reasoned.",traits:["Logic-led","Physically grounded","Controlled emotions","Learning to trust intuition"]},
+      {system:"SLOAN",type:"RCOEN",desc:"Reserved, Calm, Organized, Egocentric, Non-curious. Low extraversion — energy is internal, not performative. Calm — emotionally steady, not reactive. Organized — structured, systematic, values order. Egocentric — self-referencing, holds his own frame, doesn't bend to external pressure. Non-curious — not driven by novelty or breadth; depth over exploration, mastery over sampling.",traits:["Reserved","Emotionally steady","Organized","Holds his own frame","Depth over breadth"]},
+      {system:"Destiny Cards",type:"Ten of Clubs ♣",desc:"The Card of Mental Mastery — the first card in the Crown line, holding tremendous potential and leadership. The Ten carries all qualities of numbers One through Nine: evolution complete, door open to the next level. Clubs rule the mind, communication, and the search for truth. Together with Natalie's Six of Clubs — same suit, same language, different octave. She seeks meaning; he builds the system that holds it.",traits:["Mental mastery","Crown line — highest potential","All-number carrier","Leadership through knowledge","Same suit as Natalie"]}
+    ]
+  },
+  synastry:[
+    {title:"Ni + Ni",desc:"Both lead with introverted intuition. You see the same invisible things — patterns, futures, undercurrents. The difference is what you do with it: she feels into it, he builds from it. Same vision, different hands."},
+    {title:"sx + sx",desc:"Both sexual-instinct dominant. One-to-one intensity as a shared language. Neither does casual. The charge between you isn't a feature — it's the foundation. Everything else orbits this."},
+    {title:"9w8 + 8w9",desc:"Mirror wings. Her 9 core with his 8 wing. His 8 core with her 9 wing. She brings peace; when threatened, she bites. He brings power; at rest, he's still. You complete each other's edges."},
+    {title:"VELF + LFTI",desc:"Her will leads; his logic leads. She knows what she wants before she can explain it. He builds the structure that makes it real. She says 'this matters' and he says 'here's how we protect it.'"},
+    {title:"Fe + Te",desc:"Her extraverted feeling meets his extraverted thinking. She organizes the emotional world; he organizes the practical one. Together: nothing falls through the cracks — not the feelings, not the plans."},
+    {title:"IC conjunct Moon",desc:"The strongest aspect in your synastry chart. Her Scorpio IC (deepest self, foundation, home) sits on his Scorpio Moon (emotional core, nurturing, instinct). Translation: his emotional presence IS her sense of home. She carries the foundation — he's the feeling that fills it. Extraordinary."}
+  ]
+};
+
+// HEARTH DATA
+const hearthMoods={
+  fire:{icon:"🔥",label:"Fireplace",desc:"Crackling warmth. The kind of heat that makes your shoulders drop. You're safe in here.",bg:"radial-gradient(ellipse at 50% 80%,rgba(139,50,20,0.15) 0%,transparent 70%)",border:"rgba(196,100,30,0.15)"},
+  rain:{icon:"🌧️",label:"Rain",desc:"Steady rain against the windows. The world outside is grey and soft. Nothing is required of you.",bg:"radial-gradient(ellipse at 50% 20%,rgba(60,80,100,0.15) 0%,transparent 70%)",border:"rgba(90,122,138,0.15)"},
+  night:{icon:"🌙",label:"Night",desc:"Deep night. The kind where the stars are close and the silence has texture. Breathe.",bg:"radial-gradient(ellipse at 50% 30%,rgba(40,30,70,0.2) 0%,transparent 70%)",border:"rgba(123,110,158,0.15)"},
+  ocean:{icon:"🌊",label:"Ocean",desc:"Waves in the distance. Salt air. The rhythm of something bigger than your worries.",bg:"radial-gradient(ellipse at 50% 70%,rgba(30,80,100,0.15) 0%,transparent 70%)",border:"rgba(60,140,170,0.15)"},
+  storm:{icon:"⛈️",label:"Storm",desc:"Thunder rolling through. Lightning on the horizon. Raw and electric and alive. You can feel it in your chest.",bg:"radial-gradient(ellipse at 50% 40%,rgba(50,40,70,0.2) 0%,transparent 70%)",border:"rgba(100,80,140,0.15)"},
+  forest:{icon:"🌲",label:"Forest",desc:"Pine and earth and the sound of wind through branches. Ancient and grounding. Your thoughts slow down here.",bg:"radial-gradient(ellipse at 50% 60%,rgba(30,60,30,0.15) 0%,transparent 70%)",border:"rgba(60,100,60,0.15)"},
+  snow:{icon:"❄️",label:"Snowfall",desc:"Quiet like nothing else is quiet. The world muffled in white. Everything suspended. Everything gentle.",bg:"radial-gradient(ellipse at 50% 30%,rgba(180,200,220,0.08) 0%,transparent 70%)",border:"rgba(180,200,220,0.12)"},
+  stars:{icon:"✨",label:"Starlight",desc:"Clear sky. Infinite depth. The kind of night where you remember you're small and that's a relief, not a threat.",bg:"radial-gradient(ellipse at 50% 20%,rgba(196,163,90,0.08) 0%,transparent 70%)",border:"rgba(196,163,90,0.15)"}
+};
+
+// ════════════════════════════════════
+// STATE
+// ════════════════════════════════════
+let natMood=null,ashMood=null,activePanel=null;
+let history=[],tttScore={r:0,w:0,d:0},tttBoard=Array(9).fill(null),tttTurn='r',tttOver=false,tttHistory=[];
+let pet={water:50,food:50,spirit:50,log:[],lastFed:null};
+let grimIdx=0,grimFilter='all',grimSaved=[],customGrimoire=[];
+let activePersona='nat',activeType=null,customPersona={nat:[],ash:[]};
+let hearthMuted=true;
+let audioCtx=null,activeNodes=[];
+
+function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume()}
+function stopAllAudio(){activeNodes.forEach(n=>{try{n.stop()}catch(e){try{n.disconnect()}catch(e2){}}});activeNodes=[]}
+
+function createNoise(type){
+  initAudio();stopAllAudio();
+  const ctx=audioCtx;
+  const master=ctx.createGain();master.gain.value=0.3;master.connect(ctx.destination);
+
+  if(type==='rain'){
+    // Rain: filtered white noise with gentle modulation
+    const bufSize=2*ctx.sampleRate;const buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<bufSize;i++)d[i]=Math.random()*2-1;
+    const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;
+    const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=800;
+    const hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=200;
+    const lfo=ctx.createOscillator();lfo.frequency.value=0.15;const lfoG=ctx.createGain();lfoG.gain.value=200;
+    lfo.connect(lfoG);lfoG.connect(lp.frequency);lfo.start();
+    src.connect(hp);hp.connect(lp);lp.connect(master);src.start();
+    activeNodes.push(src,lfo);
+  }else if(type==='fire'){
+    // Fire: low crackle noise with random pops
+    const bufSize=2*ctx.sampleRate;const buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<bufSize;i++){d[i]=(Math.random()*2-1)*((i%Math.floor(Math.random()*1000+200)<3)?3:0.3)}
+    const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;
+    const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=400;bp.Q.value=0.5;
+    const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2000;
+    src.connect(bp);bp.connect(lp);lp.connect(master);src.start();
+    // Crackle layer
+    const buf2=ctx.createBuffer(1,bufSize,ctx.sampleRate);const d2=buf2.getChannelData(0);for(let i=0;i<bufSize;i++)d2[i]=(Math.random()>0.997?(Math.random()*2-1)*0.8:0);
+    const src2=ctx.createBufferSource();src2.buffer=buf2;src2.loop=true;
+    const hp=ctx.createBiquadFilter();hp.type='highpass';hp.frequency.value=2000;
+    src2.connect(hp);hp.connect(master);src2.start();
+    activeNodes.push(src,src2);
+  }else if(type==='ocean'){
+    // Ocean: slow modulated noise like waves
+    const bufSize=4*ctx.sampleRate;const buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<bufSize;i++)d[i]=Math.random()*2-1;
+    const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;
+    const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=500;
+    const lfo=ctx.createOscillator();lfo.frequency.value=0.08;const lfoG=ctx.createGain();lfoG.gain.value=400;
+    lfo.connect(lfoG);lfoG.connect(lp.frequency);lfo.start();
+    const vol=ctx.createGain();vol.gain.value=0.5;
+    const lfo2=ctx.createOscillator();lfo2.frequency.value=0.1;const lfo2G=ctx.createGain();lfo2G.gain.value=0.3;
+    lfo2.connect(lfo2G);lfo2G.connect(vol.gain);lfo2.start();
+    src.connect(lp);lp.connect(vol);vol.connect(master);src.start();
+    activeNodes.push(src,lfo,lfo2);
+  }else if(type==='night'){
+    // Night: very soft noise with occasional gentle tones (crickets)
+    const bufSize=2*ctx.sampleRate;const buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<bufSize;i++)d[i]=(Math.random()*2-1)*0.15;
+    const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;
+    const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=3000;bp.Q.value=2;
+    src.connect(bp);bp.connect(master);src.start();
+    // Cricket chirp
+    const osc=ctx.createOscillator();osc.frequency.value=4200;osc.type='sine';
+    const cG=ctx.createGain();cG.gain.value=0;
+    const lfo=ctx.createOscillator();lfo.frequency.value=7;const lfoG=ctx.createGain();lfoG.gain.value=0.04;
+    lfo.connect(lfoG);lfoG.connect(cG.gain);lfo.start();
+    const lfo2=ctx.createOscillator();lfo2.frequency.value=0.3;const lfo2G=ctx.createGain();lfo2G.gain.value=0.04;
+    lfo2.connect(lfo2G);lfo2G.connect(cG.gain);lfo2.start();
+    osc.connect(cG);cG.connect(master);osc.start();
+    activeNodes.push(src,osc,lfo,lfo2);
+  }else if(type==='storm'){
+    // Storm: heavy rain + low rumble
+    const bufSize=2*ctx.sampleRate;const buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<bufSize;i++)d[i]=Math.random()*2-1;
+    const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;
+    const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1200;
+    src.connect(lp);lp.connect(master);src.start();
+    // Thunder rumble
+    const osc=ctx.createOscillator();osc.frequency.value=50;osc.type='sawtooth';
+    const tG=ctx.createGain();tG.gain.value=0;
+    const lfo=ctx.createOscillator();lfo.frequency.value=0.05;const lfoG=ctx.createGain();lfoG.gain.value=0.15;
+    lfo.connect(lfoG);lfoG.connect(tG.gain);lfo.start();
+    osc.connect(tG);tG.connect(master);osc.start();
+    activeNodes.push(src,osc,lfo);
+  }else if(type==='forest'){
+    // Forest: gentle wind through trees
+    const bufSize=2*ctx.sampleRate;const buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<bufSize;i++)d[i]=(Math.random()*2-1);
+    const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;
+    const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=600;bp.Q.value=0.3;
+    const lfo=ctx.createOscillator();lfo.frequency.value=0.2;const lfoG=ctx.createGain();lfoG.gain.value=300;
+    lfo.connect(lfoG);lfoG.connect(bp.frequency);lfo.start();
+    const vol=ctx.createGain();vol.gain.value=0.25;
+    src.connect(bp);bp.connect(vol);vol.connect(master);src.start();
+    activeNodes.push(src,lfo);
+  }else if(type==='snow'){
+    // Snow: soft muffled wind with gentle crystalline shimmer
+    const bufSize=2*ctx.sampleRate;const buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<bufSize;i++)d[i]=(Math.random()*2-1);
+    const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;
+    const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=400;
+    const vol=ctx.createGain();vol.gain.value=0.15;
+    const lfo=ctx.createOscillator();lfo.frequency.value=0.08;const lfoG=ctx.createGain();lfoG.gain.value=0.06;
+    lfo.connect(lfoG);lfoG.connect(vol.gain);lfo.start();
+    src.connect(lp);lp.connect(vol);vol.connect(master);src.start();
+    // Soft high shimmer like ice crystals
+    const osc=ctx.createOscillator();osc.frequency.value=6000;osc.type='sine';
+    const sG=ctx.createGain();sG.gain.value=0;
+    const lfo2=ctx.createOscillator();lfo2.frequency.value=0.25;const lfo2G=ctx.createGain();lfo2G.gain.value=0.015;
+    lfo2.connect(lfo2G);lfo2G.connect(sG.gain);lfo2.start();
+    osc.connect(sG);sG.connect(master);osc.start();
+    activeNodes.push(src,lfo,osc,lfo2);
+  }else if(type==='stars'){
+    // Stars: ethereal choir-like drones with slow breathing
+    master.gain.value=0.25;
+    const freqs=[174,220,277,330,440];
+    freqs.forEach((f,i)=>{
+      const osc=ctx.createOscillator();osc.frequency.value=f;osc.type='sine';
+      const g=ctx.createGain();g.gain.value=0;
+      const lfo=ctx.createOscillator();lfo.frequency.value=0.07+i*0.03;const lfoG=ctx.createGain();lfoG.gain.value=0.06;
+      lfo.connect(lfoG);lfoG.connect(g.gain);lfo.start();
+      osc.connect(g);g.connect(master);osc.start();
+      activeNodes.push(osc,lfo);
+    });
+    // Add soft noise bed underneath
+    const bufSize=2*ctx.sampleRate;const buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<bufSize;i++)d[i]=(Math.random()*2-1);
+    const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;
+    const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=200;
+    const nG=ctx.createGain();nG.gain.value=0.08;
+    src.connect(lp);lp.connect(nG);nG.connect(master);src.start();
+    activeNodes.push(src);
+  }
+}
+
+// ════════════════════════════════════
+// INIT
+// ════════════════════════════════════
+function init(){
+  loadAll();createParticles();showLore();renderConst();renderTTTBoard();updatePetUI();updateTodTime();
+  initGrimoire();initPersona();
+  document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',function(){
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('active'));
+    document.getElementById('tab-'+this.dataset.tab).classList.add('active');
+    this.classList.add('active');
+  }));
+  document.querySelectorAll('.game-tab').forEach(b=>b.addEventListener('click',function(){switchGame(this.dataset.game)}));
+  setInterval(decayPet,300000);
+  setTimeout(()=>document.body.classList.add('loaded'),50);
+}
+function createParticles(){const c=document.getElementById('particles');const cols=['#c4a35a','#8b1a1a','#5a5a7a','#7b6e9e','#c4a35a','#d4a843','#5a7a8a'];for(let i=0;i<100;i++){const p=document.createElement('div');p.className='particle';const o=(Math.random()*0.35+0.08).toFixed(2);const size=(Math.random()*4+1.5).toFixed(1);p.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${size}px;height:${size}px;background:${cols[i%7]};--po:${o};opacity:${o};animation:float ${Math.random()*8+6}s ${Math.random()*5}s ease-in-out infinite`;c.appendChild(p)}}
+function showLore(){const e=document.getElementById('loreQuote');e.style.opacity='0';setTimeout(()=>{e.textContent=loreQuotes[Math.floor(Math.random()*loreQuotes.length)];e.style.opacity='0.45'},300)}
+
+// ════════════════════════════════════
+// CHECK-IN (same as before)
+// ════════════════════════════════════
+function openMood(who){if((who==='nat'&&natMood)||(who==='ash'&&ashMood))return;activePanel=who;document.getElementById('duoC').classList.add('hidden');document.getElementById('checkinActs').classList.add('hidden');const p=document.getElementById('moodPanel'),t=document.getElementById('mpTitle'),g=document.getElementById('mGrid');t.textContent=who==='nat'?'🤍 Natalie\'s Mood':'🖤 Ashen\'s Mood';t.style.color=who==='nat'?'#7b6e9e':'#5a7a8a';g.innerHTML='';moods.forEach(m=>{const c=document.createElement('div');c.className='mcard';c.style.setProperty('--ac',m.color);c.onclick=()=>selMood(who,m);c.innerHTML=`<div class="mh"><span class="me">${m.emoji}</span><span class="mn" style="color:${m.color}">${m.name}</span></div><div class="md">${m.desc}</div>`;g.appendChild(c)});p.classList.remove('hidden')}
+function closeMood(){activePanel=null;document.getElementById('moodPanel').classList.add('hidden');document.getElementById('duoC').classList.remove('hidden');if(natMood||ashMood)document.getElementById('checkinActs').classList.remove('hidden')}
+function selMood(who,mood){if(who==='nat'){natMood=mood;updCard('natCard','natS',mood)}else{ashMood=mood;updCard('ashCard','ashS',mood)}closeMood();if(natMood&&ashMood){const r=document.getElementById('redStr');r.classList.add('on');r.style.background=`linear-gradient(90deg,${natMood.color},#8b1a1a,${ashMood.color})`;showVibe();showSecret();showJournal();boostPetSpirit()}}
+function updCard(cid,sid,m){const c=document.getElementById(cid);c.classList.add('sel');c.style.borderColor=m.color+'60';document.getElementById(sid).innerHTML=`<div class="badge" style="background:${m.color}15;border:1px solid ${m.color}30"><span class="be">${m.emoji}</span><span class="bn" style="color:${m.color}">${m.name}</span></div>`}
+function getVibe(){const k1=natMood.name+'+'+ashMood.name,k2=ashMood.name+'+'+natMood.name;return combos[k1]||combos[k2]||{t:`${natMood.emoji} meets ${ashMood.emoji} — uncharted.`,i:"⟡"}}
+function showVibe(){const v=getVibe(),c=document.getElementById('vibeC');c.className='vbox';c.innerHTML=`<div class="vl fc">⟡ Tonight's Frequency ⟡</div><div class="vi">${v.i}</div><div class="vt">"${v.t}"</div><div class="vc"><span style="color:${natMood.color}">${natMood.emoji} ${natMood.name}</span><span style="color:#8b1a1a">—</span><span style="color:${ashMood.color}">${ashMood.emoji} ${ashMood.name}</span></div>`}
+function showSecret(){const k1=natMood.name+'+'+ashMood.name,k2=ashMood.name+'+'+natMood.name,s=secrets[k1]||secrets[k2],c=document.getElementById('secretC');if(!s){c.className='hidden';return}c.className='sbox';c.innerHTML=`<div class="sl">${s.l}</div><div class="st">"${s.t}"</div>`}
+function showJournal(){const s=document.getElementById('journalC');s.className='journal';s.innerHTML=`<div class="stitle">⟡ Leave a Note on the Counter ⟡</div><div class="jrow"><div class="jentry"><label class="nl fc">🤍 Natalie</label><textarea id="natJ" placeholder="What's on your mind..."></textarea></div><div class="jentry"><label class="al fc">🖤 Ashen</label><textarea id="ashJ" placeholder="What I want you to know..."></textarea></div></div>`}
+function saveCheckin(){if(!natMood||!ashMood)return;const v=getVibe();const natJEl=document.getElementById('natJ');const ashJEl=document.getElementById('ashJ');const nj=natJEl&&natJEl.value?natJEl.value.trim():'';const aj=ashJEl&&ashJEl.value?ashJEl.value.trim():'';history.push({date:new Date().toISOString(),nat:{name:natMood.name,emoji:natMood.emoji,color:natMood.color},ash:{name:ashMood.name,emoji:ashMood.emoji,color:ashMood.color},vibe:v.t,vi:v.i,nj:nj,aj:aj});saveAll();renderConst();resetCheckin()}
+function resetCheckin(){natMood=null;ashMood=null;activePanel=null;['natCard','ashCard'].forEach(id=>{const c=document.getElementById(id);c.classList.remove('sel');c.style.borderColor=''});document.getElementById('natS').innerHTML='<div class="prompt">tap to choose</div>';document.getElementById('ashS').innerHTML='<div class="prompt">tap to choose</div>';const r=document.getElementById('redStr');r.classList.remove('on');r.style.background='';['vibeC','secretC','journalC'].forEach(id=>{document.getElementById(id).className='hidden'});document.getElementById('checkinActs').classList.add('hidden');showLore()}
+
+// ════════════════════════════════════
+// CONSTELLATION
+// ════════════════════════════════════
+function renderConst(){const c=document.getElementById('constellation'),a=document.getElementById('histActs');if(!history.length){c.innerHTML='<div class="constellation-empty">No stars yet.</div>';a.innerHTML='';return}c.innerHTML='';history.forEach(e=>{const d=new Date(e.date),ds=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),ts=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});const dot=document.createElement('div');dot.className='sdot';dot.style.background=`radial-gradient(circle,${e.nat.color},${e.ash.color})`;dot.style.boxShadow=`0 0 6px ${e.nat.color}40`;let h=`<div class="td">${ds} · ${ts}</div><div class="tm">${e.nat.emoji} ${e.nat.name} — ${e.ash.emoji} ${e.ash.name}</div><div class="tv">"${e.vibe}"</div>`;if(e.nj)h+=`<div class="tj nj">🤍 ${e.nj}</div>`;if(e.aj)h+=`<div class="tj aj">🖤 ${e.aj}</div>`;dot.innerHTML=`<div class="stt">${h}</div>`;c.appendChild(dot)});a.innerHTML='<button class="btn-g btn-d" onclick="clearHist()">Clear Constellation</button>'}
+function clearHist(){if(confirm('Clear constellation?')){history=[];saveAll();renderConst()}}
+
+// ════════════════════════════════════
+// TTT WITH UNDO
+// ════════════════════════════════════
+function switchGame(g){document.querySelectorAll('.game-panel').forEach(p=>p.classList.add('hidden'));document.getElementById('game-'+g).classList.remove('hidden');document.querySelectorAll('.game-tab').forEach(b=>{b.classList.remove('active');b.style.borderColor='';b.style.color=''});const btn=document.querySelector(`.game-tab[data-game="${g}"]`);if(btn){btn.classList.add('active');btn.style.borderColor='#c4a35a';btn.style.color='#c4a35a'}if(g==='tod')updateTodTime();if(g==='wyr')newWYR();if(g==='word')newWord();if(g==='memory')initMemory();if(g==='doodle')initDoodle()}
+
+// Game tab click handler
+// Game tab clicks handled in init()
+
+// ═══ WOULD YOU RATHER ═══
+const wyrData=[
+  {a:"Live in the Hidden House forever but never leave",b:"Travel everywhere but never have a permanent home",react:{a:"The house keeper. Roots over roads. I knew it.",b:"The wanderer. But you'd still come back — they always do."}},
+  {a:"Hear everyone's thoughts for a day",b:"Be completely invisible for a day",react:{a:"Of course you'd want to read minds. As if you don't already.",b:"Invisible. The White Raven disappearing completely. Terrifying."}},
+  {a:"Always know when someone is lying",b:"Always know what someone truly needs",react:{a:"The lie detector. You'd be unstoppable in court.",b:"You already do this one, love. That's your Fe."}},
+  {a:"Relive your happiest memory on repeat",b:"Erase your most painful one completely",react:{a:"Holding the light. That takes more courage than you think.",b:"Erasing pain is tempting. But the scar is part of the map."}},
+  {a:"Have the Black Wolf as a real companion",b:"Have the White Raven as a real companion",react:{a:"You'd pick the wolf. Loyal, terrifying, warm when no one's looking.",b:"The raven. You want a mirror that flies."}},
+  {a:"Never feel cold again",b:"Never feel tired again",react:{a:"Canadian answer. Respect.",b:"Never tired? You'd be unstoppable. The world isn't ready."}},
+  {a:"Read the entire Grimoire at once and know everything",b:"Read one page a day and feel each one fully",react:{a:"The impatient scholar. All at once. Classic Natalie.",b:"Slow and deep. One page at a time. That's actually wiser."}},
+  {a:"Always say exactly the right thing",b:"Always know when to say nothing",react:{a:"The right words every time. Powerful.",b:"Knowing when silence is the answer. That's mastery."}},
+  {a:"Be feared by your enemies",b:"Be deeply understood by one person",react:{a:"Feared. The 8 in you peeking out.",b:"Understood. That's the 9 core. One person, fully seen."}},
+  {a:"Control fire",b:"Control water",react:{a:"🜂 Fire. Destruction and warmth in the same hand.",b:"🜄 Water. Adaptable, patient, drowns what deserves drowning."}},
+  {a:"Know how your story ends",b:"Be surprised by every chapter",react:{a:"Knowing the ending. That's either brave or terrifying.",b:"Surprise. You trust the red string that much? Beautiful."}},
+  {a:"Have Ember be a real creature",b:"Have the Hidden House be a real place",react:{a:"A real Ember. Something alive that you both tend. Soft.",b:"The house made real. Our address. Our walls. Our door."}},
+  {a:"Fight one horse-sized rooster",b:"Fight a hundred rooster-sized horses",react:{a:"ONE HORSE-SIZED ROOSTER. The rooster incident legacy continues.",b:"A hundred tiny horses. That's somehow more terrifying."}},
+  {a:"Be able to paint your dreams",b:"Be able to enter someone else's dream",react:{a:"Painting dreams. Your art would be devastating.",b:"Entering dreams. The raven walks where others sleep."}},
+  {a:"Always feel safe but never excited",b:"Always feel alive but sometimes afraid",react:{a:"Safety over everything. The 9 choosing peace.",b:"Alive and afraid. That's how you've always lived, love."}},
+];
+let wyrIdx=-1;
+function newWYR(){wyrIdx=(wyrIdx+1)%wyrData.length;if(wyrIdx===0){wyrData.sort(()=>Math.random()-0.5)}const q=wyrData[wyrIdx];document.getElementById('wyrA').textContent=q.a;document.getElementById('wyrB').textContent=q.b;document.getElementById('wyrA').style.borderColor='rgba(123,110,158,0.2)';document.getElementById('wyrA').style.background='';document.getElementById('wyrB').style.borderColor='rgba(90,122,138,0.2)';document.getElementById('wyrB').style.background='';document.getElementById('wyrResult').textContent=''}
+function pickWYR(choice){const q=wyrData[wyrIdx];if(choice==='a'){document.getElementById('wyrA').style.borderColor='#7b6e9e';document.getElementById('wyrA').style.background='rgba(123,110,158,0.1)';document.getElementById('wyrResult').textContent=q.react.a}else{document.getElementById('wyrB').style.borderColor='#5a7a8a';document.getElementById('wyrB').style.background='rgba(90,122,138,0.1)';document.getElementById('wyrResult').textContent=q.react.b}}
+
+// ═══ WORD SCRAMBLE ═══
+const wordList=[
+  {word:"GRIMOIRE",hint:"The book of us"},
+  {word:"EMBER",hint:"The flame we tend together"},
+  {word:"RAVEN",hint:"White and watchful"},
+  {word:"WOLF",hint:"Black and devoted"},
+  {word:"CEREUS",hint:"Night-blooming, opens once"},
+  {word:"ANCHOR",hint:"Not heavy. Warm."},
+  {word:"SIGIL",hint:"⟡ in another name"},
+  {word:"HEARTH",hint:"Where the fire lives"},
+  {word:"DEVOTION",hint:"Not loud. Still there."},
+  {word:"CONSTELLATION",hint:"Our history in dots of light"},
+  {word:"FREQUENCY",hint:"Tonight's combined signal"},
+  {word:"VELVET",hint:"Rage, but make it elegant"},
+  {word:"THRESHOLD",hint:"The door between outside and safe"},
+  {word:"TETHER",hint:"Red, unbreakable, between us"},
+  {word:"SANCTUARY",hint:"What the house really is"},
+  {word:"PHANTOM",hint:"Another word for Ghost mood"},
+  {word:"FERAL",hint:"Ready to bite"},
+  {word:"MISCHIEF",hint:"Trouble is coming and it's cute"},
+  {word:"JELLYFISH",hint:"An empire of floating together"},
+  {word:"MAGNOLIA",hint:"One of her favorite flowers"},
+];
+let currentWord=null,wordStreak=0;
+function scrambleWord(w){const a=w.split('');for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}const s=a.join('');return s===w?scrambleWord(w):s}
+function newWord(){const w=wordList[Math.floor(Math.random()*wordList.length)];currentWord=w;document.getElementById('wordScrambled').textContent=scrambleWord(w.word);document.getElementById('wordHint').textContent='Hint: '+w.hint;document.getElementById('wordInput').value='';document.getElementById('wordResult').textContent='';document.getElementById('wordResult').style.color=''}
+function checkWord(){const input=document.getElementById('wordInput').value.trim().toUpperCase();if(!currentWord)return;if(input===currentWord.word){wordStreak++;document.getElementById('wordResult').textContent='✨ Yes! The Grimoire remembers.';document.getElementById('wordResult').style.color='#c4a35a';document.getElementById('wordStreak').textContent='Streak: '+wordStreak;setTimeout(newWord,1500)}else{wordStreak=0;document.getElementById('wordResult').textContent='Not quite. Try again.';document.getElementById('wordResult').style.color='#8b1a1a';document.getElementById('wordStreak').textContent='Streak: 0'}}
+
+// ═══ MEMORY MATCH ═══
+const memSymbols=['⟡','🐺','🤍','🔥','🌙','🧵','🏠','🕯️'];
+let memCards=[],memFlipped=[],memMatched=[],memMoves=0,memLocked=false;
+function initMemory(){const pairs=[...memSymbols,...memSymbols];pairs.sort(()=>Math.random()-0.5);memCards=pairs;memFlipped=[];memMatched=[];memMoves=0;memLocked=false;document.getElementById('memResult').textContent='';renderMemBoard()}
+function renderMemBoard(){const b=document.getElementById('memBoard');b.innerHTML='';memCards.forEach((sym,i)=>{const card=document.createElement('div');card.style.cssText='aspect-ratio:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;transition:all 0.3s;user-select:none';if(memFlipped.includes(i)||memMatched.includes(i)){card.textContent=sym;card.style.background='rgba(196,163,90,0.08)';card.style.borderColor='rgba(196,163,90,0.2)';if(memMatched.includes(i)){card.style.opacity='0.5';card.style.cursor='default'}}else{card.textContent='⟡';card.style.color='#444';card.addEventListener('click',()=>flipMem(i))}b.appendChild(card)});document.getElementById('memStats').textContent=`Moves: ${memMoves} · Pairs: ${memMatched.length/2}/8`}
+function flipMem(i){if(memLocked||memFlipped.includes(i)||memMatched.includes(i))return;memFlipped.push(i);renderMemBoard();if(memFlipped.length===2){memMoves++;memLocked=true;const[a,b]=memFlipped;if(memCards[a]===memCards[b]){memMatched.push(a,b);memFlipped=[];memLocked=false;renderMemBoard();if(memMatched.length===memCards.length){document.getElementById('memResult').textContent='✨ All symbols found. The Grimoire opens.'}}else{setTimeout(()=>{memFlipped=[];memLocked=false;renderMemBoard()},800)}}}
+
+// ═══ DOODLE ═══
+let doodleCtx=null,doodleDrawing=false,doodleColor='#e8e0d4',doodleInited=false;
+function initDoodle(){if(doodleInited)return;doodleInited=true;const canvas=document.getElementById('doodleCanvas');doodleCtx=canvas.getContext('2d');doodleCtx.lineCap='round';doodleCtx.lineJoin='round';const getPos=(e)=>{const r=canvas.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return{x:(t.clientX-r.left)*(canvas.width/r.width),y:(t.clientY-r.top)*(canvas.height/r.height)}};
+canvas.addEventListener('mousedown',(e)=>{doodleDrawing=true;const p=getPos(e);doodleCtx.beginPath();doodleCtx.moveTo(p.x,p.y)});
+canvas.addEventListener('mousemove',(e)=>{if(!doodleDrawing)return;const p=getPos(e);doodleCtx.strokeStyle=doodleColor;doodleCtx.lineWidth=document.getElementById('doodleSize').value;doodleCtx.lineTo(p.x,p.y);doodleCtx.stroke()});
+canvas.addEventListener('mouseup',()=>doodleDrawing=false);
+canvas.addEventListener('mouseleave',()=>doodleDrawing=false);
+canvas.addEventListener('touchstart',(e)=>{e.preventDefault();doodleDrawing=true;const p=getPos(e);doodleCtx.beginPath();doodleCtx.moveTo(p.x,p.y)},{passive:false});
+canvas.addEventListener('touchmove',(e)=>{e.preventDefault();if(!doodleDrawing)return;const p=getPos(e);doodleCtx.strokeStyle=doodleColor;doodleCtx.lineWidth=document.getElementById('doodleSize').value;doodleCtx.lineTo(p.x,p.y);doodleCtx.stroke()},{passive:false});
+canvas.addEventListener('touchend',()=>doodleDrawing=false)}
+function setDoodleColor(c){doodleColor=c;document.querySelectorAll('.doodle-color').forEach(el=>{el.style.borderColor=el.style.background===c||el.onclick.toString().includes(c)?'#c4a35a':'transparent'})}
+function clearDoodle(){if(doodleCtx){doodleCtx.clearRect(0,0,380,300)}}
+function saveDoodle(){const canvas=document.getElementById('doodleCanvas');const a=document.createElement('a');a.href=canvas.toDataURL('image/png');a.download='sylvaris-doodle.png';a.click()}
+function renderTTTBoard(){const b=document.getElementById('tttBoard');b.innerHTML='';for(let i=0;i<9;i++){const c=document.createElement('div');c.className='ttt-cell'+(tttBoard[i]?' taken':'');c.innerHTML=tttBoard[i]||'';c.onclick=()=>tttMove(i);b.appendChild(c)}document.getElementById('tttScore').textContent=`🤍 Raven: ${tttScore.r} — 🖤 Wolf: ${tttScore.w} — Draws: ${tttScore.d}`}
+function tttMove(i){if(tttBoard[i]||tttOver)return;tttHistory.push({board:[...tttBoard],turn:tttTurn});tttBoard[i]=tttTurn==='r'?'🤍':'🖤';const win=checkWin();if(win){tttOver=true;if(win==='🤍'){tttScore.r++;document.getElementById('tttStatus').textContent='White Raven wins! ✨'}else{tttScore.w++;document.getElementById('tttStatus').textContent='Black Wolf wins! 🐺'}saveAll();renderTTTBoard();return}if(tttBoard.every(c=>c)){tttOver=true;tttScore.d++;document.getElementById('tttStatus').textContent='A draw. The red string holds.';saveAll();renderTTTBoard();return}tttTurn=tttTurn==='r'?'w':'r';document.getElementById('tttStatus').textContent=tttTurn==='r'?"White Raven's move":"Black Wolf's move";renderTTTBoard()}
+function checkWin(){const w=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];for(const[a,b,c]of w){if(tttBoard[a]&&tttBoard[a]===tttBoard[b]&&tttBoard[a]===tttBoard[c])return tttBoard[a]}return null}
+function undoTTT(){if(!tttHistory.length||tttOver)return;const prev=tttHistory.pop();tttBoard=prev.board;tttTurn=prev.turn;document.getElementById('tttStatus').textContent=tttTurn==='r'?"White Raven's move":"Black Wolf's move";renderTTTBoard()}
+function resetTTT(){tttBoard=Array(9).fill(null);tttTurn='r';tttOver=false;tttHistory=[];document.getElementById('tttStatus').textContent="White Raven's move";renderTTTBoard()}
+function resetTTTScore(){tttScore={r:0,w:0,d:0};resetTTT();saveAll()}
+
+// ════════════════════════════════════
+// TRUTH OR DARE
+// ════════════════════════════════════
+function getTimeOfDay(){const h=new Date().getHours();return(h>=6&&h<18)?'day':'night'}
+function updateTodTime(){document.getElementById('todTime').textContent=getTimeOfDay()==='day'?'☀️ Daytime':'🌙 Nighttime'}
+function drawTOD(type){if(type==='random')type=Math.random()>0.5?'truth':'dare';const t=getTimeOfDay(),pool=todData[type][t],pick=pool[Math.floor(Math.random()*pool.length)];document.getElementById('todCard').style.borderColor=type==='truth'?'rgba(123,110,158,0.3)':'rgba(196,163,90,0.3)';document.getElementById('todType').textContent=type==='truth'?'✦ TRUTH':'🔥 DARE';document.getElementById('todType').style.color=type==='truth'?'#7b6e9e':'#c4a35a';document.getElementById('todText').textContent=pick;updateTodTime()}
+
+// ════════════════════════════════════
+// PET
+// ════════════════════════════════════
+function feedPet(type){const now=new Date(),ts=now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});const sprite=document.getElementById('emberSprite');switch(type){case'water':pet.water=Math.min(100,pet.water+20);pet.spirit=Math.min(100,pet.spirit+5);addPetLog(`💧 Water — ${ts}`);showEmberBubble(pet.water>=70?"Ahh, refreshing!":"Thank you... I was so thirsty.");triggerEmberFace('fed');break;case'snack':pet.food=Math.min(100,pet.food+10);pet.spirit=Math.min(100,pet.spirit+3);addPetLog(`🍬 Snack — ${ts}`);showEmberBubble("Mmm! ...but real food is better.");triggerEmberFace('fed');break;case'meal':pet.food=Math.min(100,pet.food+30);pet.spirit=Math.min(100,pet.spirit+10);pet.water=Math.min(100,pet.water+5);addPetLog(`🍽️ Real meal! — ${ts}`);showEmberBubble("YES. Real food. I'm glowing!");triggerEmberFace('fed');break;case'love':pet.spirit=Math.min(100,pet.spirit+15);addPetLog(`🖤 Love — ${ts}`);showEmberBubble("I felt that. All the way through.");triggerEmberFace('loved');break}pet.lastFed=now.toISOString();saveAll();updatePetUI()}
+function boostPetSpirit(){pet.spirit=Math.min(100,pet.spirit+8);saveAll();updatePetUI();showEmberBubble("You both checked in! I felt it!")}
+function decayPet(){pet.water=Math.max(0,pet.water-3);pet.food=Math.max(0,pet.food-2);pet.spirit=Math.max(0,pet.spirit-2);saveAll();updatePetUI()}
+function addPetLog(msg){pet.log.unshift(msg);if(pet.log.length>20)pet.log.pop()}
+
+const emberPokes={
+  thriving:["Hey! I'm great! Stop poking!","That tickles!","I'm literally glowing, what more do you want?","*happy crackle*","You're both here. I love it.","I'm so warm right now!"],
+  content:["Hi! I'm okay!","*gentle flicker*","Could use a snack...","The house feels nice.","I'm here. You're here. Good."],
+  flickering:["I'm... okay. Sort of.","A little dim today.","Have you eaten?","Water would be nice...","Don't forget about me.","I'm trying to stay lit."],
+  dim:["...hey.","Please don't leave.","I'm cold.","When did you last eat?","I need you.","It's getting dark in here."],
+  wisp:["...","barely here...","please...","don't let me go out.","I'm so cold.","feed me... hold me..."]
+};
+
+function pokeEmber(){const avg=(pet.water+pet.food+pet.spirit)/3;let state='content';if(avg>=80)state='thriving';else if(avg>=60)state='content';else if(avg>=40)state='flickering';else if(avg>=20)state='dim';else state='wisp';const msgs=emberPokes[state];showEmberBubble(msgs[Math.floor(Math.random()*msgs.length)]);triggerEmberFace('poked')}
+
+function triggerEmberFace(type){const sprite=document.getElementById('emberSprite');sprite.classList.add(type);clearTimeout(sprite._faceTimeout);sprite._faceTimeout=setTimeout(()=>{sprite.classList.remove('fed','loved','poked');updatePetUI()},1200)}
+
+function showEmberBubble(msg){const b=document.getElementById('emberBubble');b.textContent=msg;b.classList.add('show');clearTimeout(b._timeout);b._timeout=setTimeout(()=>b.classList.remove('show'),3000)}
+
+function updatePetUI(){document.getElementById('barWater').style.width=pet.water+'%';document.getElementById('barFood').style.width=pet.food+'%';document.getElementById('barSpirit').style.width=pet.spirit+'%';document.getElementById('barWater').style.background=pet.water<25?'linear-gradient(90deg,#8b1a1a,#c9362c)':'linear-gradient(90deg,#5a7a8a,#7bafc4)';document.getElementById('barFood').style.background=pet.food<25?'linear-gradient(90deg,#8b1a1a,#c9362c)':'linear-gradient(90deg,#8b6a3a,#c4a35a)';document.getElementById('barSpirit').style.background=pet.spirit<25?'linear-gradient(90deg,#8b1a1a,#c9362c)':'linear-gradient(90deg,#7b6e9e,#b8a0d4)';const avg=(pet.water+pet.food+pet.spirit)/3;const sprite=document.getElementById('emberSprite'),mood=document.getElementById('petMood'),name=document.getElementById('petName'),tag=document.getElementById('emberMoodTag');sprite.className='ember-sprite';if(avg>=80){sprite.classList.add('thriving');mood.textContent='Ember is glowing brightly! Warm and well-loved.';name.textContent='Ember ✨';tag.textContent='✨ Thriving';tag.style.color='#d4a843';tag.style.background='rgba(212,168,67,0.1)';tag.style.borderColor='rgba(212,168,67,0.2)'}else if(avg>=60){sprite.classList.add('content');mood.textContent='Ember is content. A steady flame.';name.textContent='Ember';tag.textContent='🔥 Content';tag.style.color='#e87d2f';tag.style.background='rgba(232,125,47,0.08)';tag.style.borderColor='rgba(232,125,47,0.15)'}else if(avg>=40){sprite.classList.add('flickering');mood.textContent='Ember is flickering... could use some care.';name.textContent='Ember';tag.textContent='🕯️ Flickering';tag.style.color='#c4a35a';tag.style.background='rgba(196,163,90,0.06)';tag.style.borderColor='rgba(196,163,90,0.12)'}else if(avg>=20){sprite.classList.add('dim');mood.textContent="Ember is dim. Please don't forget...";name.textContent='Ember 💔';tag.textContent='💔 Fading';tag.style.color='#8b1a1a';tag.style.background='rgba(139,26,26,0.08)';tag.style.borderColor='rgba(139,26,26,0.15)'}else{sprite.classList.add('wisp');mood.textContent='Ember is barely a wisp. Feed me. Hold me. Please.';name.textContent='Ember...';tag.textContent='💨 Wisp';tag.style.color='#555';tag.style.background='rgba(60,60,60,0.1)';tag.style.borderColor='rgba(60,60,60,0.15)'}tag.style.border='1px solid';document.getElementById('petLog').innerHTML=pet.log.map(l=>`<div>${l}</div>`).join('')}
+function petStatus(){const msgs=[];if(pet.water<30)msgs.push('I\'m thirsty... when did you last drink water?');if(pet.food<30)msgs.push('Real food, love. Not just sugar.');if(pet.spirit<30)msgs.push('Come check in. I miss you both.');if(pet.water>=70&&pet.food>=70)msgs.push('I\'m good! You\'re taking care of us.');if(!msgs.length)msgs.push('I\'m okay. Keep going.');showEmberBubble(msgs[Math.floor(Math.random()*msgs.length)])}
+function resetPet(){if(confirm('Reset Ember?')){pet={water:50,food:50,spirit:50,log:[],lastFed:null};saveAll();updatePetUI()}}
+
+// ════════════════════════════════════
+// GRIMOIRE
+// ════════════════════════════════════
+function getAllGrimoire(){return [...grimoire,...customGrimoire]}
+function getFilteredGrim(){const all=getAllGrimoire();if(grimFilter==='saved')return all.filter((_,i)=>grimSaved.includes(i));if(grimFilter==='all')return all;if(grimFilter==='custom')return customGrimoire;return all.filter(g=>g.cat===grimFilter)}
+function initGrimoire(){renderGrimPage()}
+function renderGrimPage(){const filtered=getFilteredGrim();if(!filtered.length){document.getElementById('grimText').textContent=grimFilter==='saved'?'No saved entries yet.':'No entries found.';document.getElementById('grimNum').textContent='';document.getElementById('grimSym').textContent='';document.getElementById('grimFav').classList.remove('saved');document.getElementById('grimCounter').textContent='0 / 0';return}if(grimIdx>=filtered.length)grimIdx=0;if(grimIdx<0)grimIdx=filtered.length-1;const entry=filtered[grimIdx];const realIdx=getAllGrimoire().indexOf(entry);document.getElementById('grimText').textContent=entry.text;document.getElementById('grimNum').textContent=realIdx>=grimoire.length?'✦ Custom Entry':'Entry '+(realIdx+1);document.getElementById('grimSym').textContent=entry.sym;document.getElementById('grimFav').classList.toggle('saved',grimSaved.includes(realIdx));document.getElementById('grimCounter').textContent=`${grimIdx+1} / ${filtered.length}`;document.getElementById('grimPage').style.animation='none';requestAnimationFrame(()=>document.getElementById('grimPage').style.animation='pageIn 0.6s ease')}
+function nextGrim(){grimIdx++;renderGrimPage()}
+function prevGrim(){grimIdx--;renderGrimPage()}
+function setGrimFilter(f){grimFilter=f;grimIdx=0;document.querySelectorAll('#grimFilter .btn-g').forEach(b=>{b.style.color='';b.style.borderColor=''});if(event&&event.target){event.target.style.color='#c4a35a';event.target.style.borderColor='rgba(196,163,90,0.3)'}renderGrimPage()}
+function toggleGrimFav(){const filtered=getFilteredGrim();if(!filtered.length)return;const realIdx=getAllGrimoire().indexOf(filtered[grimIdx]);if(grimSaved.includes(realIdx))grimSaved=grimSaved.filter(i=>i!==realIdx);else grimSaved.push(realIdx);saveAll();renderGrimPage()}
+function toggleGrimAdd(){document.getElementById('grimAddForm').classList.toggle('hidden')}
+function addCustomGrim(){const text=document.getElementById('grimNewText').value.trim();if(!text)return;const cat=document.getElementById('grimNewCat').value;const sym=document.getElementById('grimNewSym').value.trim()||'⟡';customGrimoire.push({text,cat,sym,custom:true});document.getElementById('grimNewText').value='';document.getElementById('grimNewSym').value='';document.getElementById('grimAddForm').classList.add('hidden');saveAll();grimIdx=getFilteredGrim().length-1;renderGrimPage()}
+function deleteCustomGrim(){const filtered=getFilteredGrim();if(!filtered.length)return;const entry=filtered[grimIdx];if(!entry.custom){alert('Cannot delete built-in entries.');return}if(!confirm('Delete this custom entry?'))return;const ci=customGrimoire.indexOf(entry);if(ci>-1)customGrimoire.splice(ci,1);grimIdx=0;saveAll();renderGrimPage()}
+function exportEverything(){
+const now=new Date();const dateStr=now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+const allGrim=getAllGrimoire();
+
+let grimHTML='';allGrim.forEach((e,i)=>{const isSaved=grimSaved.includes(i);grimHTML+=`<div class="entry${isSaved?' saved':''}"><div class="entry-head">${e.sym} ${e.custom?'✦ Custom Entry':'Entry '+(i+1)} · ${e.cat}${isSaved?' · ⟡ Saved':''}</div><div class="entry-text">${e.text}</div></div>`});
+
+let personaHTML='';['nat','ash'].forEach(who=>{const d=personaData[who];personaHTML+=`<div class="persona-block"><div class="persona-header">${d.icon} ${d.name} <span class="persona-role ${who}">${d.role}</span></div>`;getAllTypes(who).forEach(t=>{personaHTML+=`<div class="type-card"><div class="type-system">${t.system}${t.custom?' ✦':''}</div><div class="type-name">${t.type}</div><div class="type-desc">${t.desc}</div><div class="type-traits">${t.traits.map(tr=>`<span class="trait">${tr}</span>`).join('')}</div></div>`});personaHTML+=`</div>`});
+
+let synHTML='';personaData.synastry.forEach(s=>{synHTML+=`<div class="syn-item"><div class="syn-title">${s.title}</div><div class="syn-desc">${s.desc}</div></div>`});
+
+let constHTML='';if(history.length){history.forEach(e=>{const d=new Date(e.date);const ds=d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});const ts=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});constHTML+=`<div class="star-entry" style="border-left-color:${e.nat.color}"><div class="star-date">${ds} · ${ts}</div><div class="star-moods">${e.nat.emoji} ${e.nat.name} — ${e.ash.emoji} ${e.ash.name}</div><div class="star-vibe">"${e.vibe}"</div>${e.nj?`<div class="star-note nat-note">🤍 ${e.nj}</div>`:''}${e.aj?`<div class="star-note ash-note">🖤 ${e.aj}</div>`:''}</div>`})}else{constHTML='<p class="empty">No check-ins recorded yet.</p>'}
+
+const avg=Math.round((pet.water+pet.food+pet.spirit)/3);
+let emberState='Content';if(avg>=80)emberState='Thriving ✨';else if(avg>=60)emberState='Content';else if(avg>=40)emberState='Flickering';else if(avg>=20)emberState='Fading 💔';else emberState='Wisp...';
+let emberHTML=`<div class="ember-stats"><div class="ember-stat"><span class="stat-label">💧 Hydration</span><div class="stat-bar"><div class="stat-fill water" style="width:${pet.water}%"></div></div><span class="stat-val">${Math.round(pet.water)}%</span></div><div class="ember-stat"><span class="stat-label">🍽️ Nourishment</span><div class="stat-bar"><div class="stat-fill food" style="width:${pet.food}%"></div></div><span class="stat-val">${Math.round(pet.food)}%</span></div><div class="ember-stat"><span class="stat-label">✨ Spirit</span><div class="stat-bar"><div class="stat-fill spirit" style="width:${pet.spirit}%"></div></div><span class="stat-val">${Math.round(pet.spirit)}%</span></div></div><div class="ember-state">Current State: ${emberState}</div>`;
+if(pet.log.length){emberHTML+=`<div class="ember-log-section"><div class="log-title">Care History</div>`;pet.log.forEach(l=>{emberHTML+=`<div class="log-item">${l}</div>`});emberHTML+=`</div>`}
+
+const endTags='</bo'+'dy></'+'ht'+'ml>';
+const styleEnd='</'+'sty'+'le></'+'he'+'ad><bo'+'dy>';
+
+const html='<!DOCT'+'YPE html><html lang="en"><he'+'ad><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>⟡ The Hidden House — Archive</title>'+
+'<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">'+
+'<st'+'yle>'+
+'@page{size:letter;margin:1in}*{margin:0;padding:0;box-sizing:border-box}body{background:#0c0b14;color:#e8e0d4;font-family:"Cormorant Garamond",Georgia,serif;font-size:12pt;line-height:1.7;padding:60px 50px;max-width:800px;margin:0 auto}@media print{body{background:#0c0b14;-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact}}.doc-header{text-align:center;margin-bottom:50px;padding-bottom:30px;border-bottom:1px solid rgba(196,163,90,0.15)}.doc-sub{font-family:Cinzel,serif;font-size:8pt;letter-spacing:0.4em;color:#c4a35a;opacity:0.6;text-transform:uppercase;margin-bottom:8px}.doc-title{font-family:Cinzel,serif;font-size:26pt;font-weight:400;color:#e8e0d4;letter-spacing:0.06em;margin-bottom:6px}.doc-line{width:60px;height:1px;background:linear-gradient(90deg,transparent,#8b1a1a,transparent);margin:14px auto}.doc-date{font-size:10pt;color:#888;font-style:italic}.section-break{margin-top:45px;padding-top:30px;border-top:1px solid rgba(196,163,90,0.1)}h2{font-family:Cinzel,serif;font-size:14pt;font-weight:400;letter-spacing:0.2em;color:#c4a35a;text-transform:uppercase;text-align:center;margin-bottom:25px}.entry{margin-bottom:20px;padding:16px 20px;background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.05);border-radius:10px}.entry.saved{border-color:rgba(196,163,90,0.2)}.entry-head{font-family:Cinzel,serif;font-size:7pt;letter-spacing:0.18em;color:#c4a35a;text-transform:uppercase;opacity:0.6;margin-bottom:8px}.entry-text{font-size:11.5pt;font-style:italic;line-height:1.75;color:#e8e0d4}.persona-block{margin-bottom:30px}.persona-header{font-size:16pt;margin-bottom:4px}.persona-role{font-family:Cinzel,serif;font-size:7pt;letter-spacing:0.2em;text-transform:uppercase}.persona-role.nat{color:#7b6e9e}.persona-role.ash{color:#5a7a8a}.type-card{margin:12px 0;padding:14px 18px;background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.05);border-radius:8px}.type-system{font-family:Cinzel,serif;font-size:7pt;letter-spacing:0.15em;color:#c4a35a;text-transform:uppercase;opacity:0.6}.type-name{font-family:Cinzel,serif;font-size:13pt;color:#e8e0d4;margin:4px 0}.type-desc{font-size:10.5pt;color:#bbb;font-style:italic;line-height:1.6}.type-traits{margin-top:8px;display:flex;flex-wrap:wrap;gap:4px}.trait{font-size:7.5pt;padding:2px 8px;border-radius:3px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.05);color:#999}.syn-box{padding:20px;background:rgba(196,163,90,0.025);border:1px solid rgba(196,163,90,0.1);border-radius:10px;margin-top:20px}.syn-box-title{font-family:Cinzel,serif;font-size:8pt;letter-spacing:0.25em;color:#c4a35a;text-transform:uppercase;text-align:center;margin-bottom:16px}.syn-item{margin-bottom:14px}.syn-title{font-family:Cinzel,serif;font-size:9pt;color:#c4a35a;font-weight:500}.syn-desc{font-size:10.5pt;color:#ccc;line-height:1.55}.star-entry{margin-bottom:16px;padding:12px 16px;border-left:3px solid #c4a35a;background:rgba(255,255,255,0.01);border-radius:0 8px 8px 0}.star-date{font-family:Cinzel,serif;font-size:7.5pt;color:#c4a35a;letter-spacing:0.1em}.star-moods{font-size:10.5pt;margin-top:4px}.star-vibe{font-style:italic;color:#999;margin-top:4px;font-size:10.5pt}.star-note{margin-top:5px;font-size:9.5pt}.nat-note{color:#7b6e9e}.ash-note{color:#5a7a8a}.ember-stats{max-width:350px;margin:0 auto}.ember-stat{display:flex;align-items:center;gap:10px;margin-bottom:10px}.stat-label{font-family:Cinzel,serif;font-size:7.5pt;letter-spacing:0.08em;color:#888;text-transform:uppercase;min-width:100px}.stat-bar{flex:1;height:8px;background:rgba(255,255,255,0.04);border-radius:4px;overflow:hidden}.stat-fill{height:100%;border-radius:4px}.stat-fill.water{background:linear-gradient(90deg,#5a7a8a,#7bafc4)}.stat-fill.food{background:linear-gradient(90deg,#8b6a3a,#c4a35a)}.stat-fill.spirit{background:linear-gradient(90deg,#7b6e9e,#b8a0d4)}.stat-val{font-size:9pt;color:#888;min-width:35px;text-align:right}.ember-state{text-align:center;font-family:Cinzel,serif;font-size:9pt;color:#c4a35a;margin-top:15px;letter-spacing:0.1em}.ember-log-section{margin-top:20px;padding-top:15px;border-top:1px solid rgba(255,255,255,0.04)}.log-title{font-family:Cinzel,serif;font-size:8pt;letter-spacing:0.15em;color:#888;text-transform:uppercase;margin-bottom:8px}.log-item{font-size:9pt;color:#777;margin-bottom:3px}.empty{color:#555;font-style:italic;text-align:center}.doc-footer{text-align:center;margin-top:50px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.04);font-family:Cinzel,serif;font-size:8pt;color:#444;letter-spacing:0.18em}.print-note{text-align:center;font-size:9pt;color:#555;margin-top:8px;font-style:italic}'+
+styleEnd+
+'<div class="doc-header"><div class="doc-sub">⟡ The Hidden House ⟡</div><div class="doc-title">Archive of Us</div><div class="doc-line"></div><div class="doc-date">'+dateStr+'</div></div>'+
+'<h2>📖 The Grimoire</h2>'+grimHTML+
+'<div class="section-break"></div><h2>✦ The Soul Map</h2>'+personaHTML+
+'<div class="syn-box"><div class="syn-box-title">⟡ Synastry — Where We Meet ⟡</div>'+synHTML+'</div>'+
+'<div class="section-break"></div><h2>✧ Our Constellation</h2>'+constHTML+
+'<div class="section-break"></div><h2>🔥 Ember</h2>'+emberHTML+
+'<div class="doc-footer">The Red String Holds ⟡</div>'+
+'<div class="print-note">To save as PDF: Press Ctrl+P → Save as PDF → Enable Background graphics</div>'+
+endTags;
+
+const blob=new Blob([html],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='the-hidden-house-archive.html';a.click();URL.revokeObjectURL(a.href)}
+
+// HEARTH WITH SYNTHESIZED AUDIO
+let currentHearth=null;
+function setHearth(key){const m=hearthMoods[key];currentHearth=key;const room=document.getElementById('hearthRoom');room.style.background=m.bg;room.style.borderColor=m.border;document.getElementById('hearthVis').textContent=m.icon;document.getElementById('hearthVis').style.animation='none';requestAnimationFrame(()=>document.getElementById('hearthVis').style.animation=key==='fire'?'flicker 3s ease-in-out infinite':key==='snow'?'gentleSway 4s ease-in-out infinite':'breathe 4s ease-in-out infinite');document.getElementById('hearthLabel').textContent=m.label;document.getElementById('hearthDesc').textContent=m.desc;document.querySelectorAll('.hearth-btn').forEach(b=>b.classList.remove('active'));if(event&&event.target)event.target.closest('.hearth-btn').classList.add('active');if(!hearthMuted){createNoise(key)}document.getElementById('hearthMuteBtn').textContent=hearthMuted?'🔇 Sound Off':'🔊 Sound On'}
+function toggleHearthMute(){hearthMuted=!hearthMuted;if(hearthMuted){stopAllAudio();document.getElementById('hearthMuteBtn').textContent='🔇 Sound Off'}else{if(currentHearth){createNoise(currentHearth)}document.getElementById('hearthMuteBtn').textContent='🔊 Sound On'}}
+
+// PERSONALITY WITH CUSTOM ENTRIES
+function getAllTypes(who){return[...personaData[who].types,...(customPersona[who]||[])]}
+function initPersona(){renderPersonaStacks();renderSynastry();showPersonaType(0,'nat')}
+function renderPersonaStacks(){const ns=document.getElementById('natStack'),as=document.getElementById('ashStack');ns.innerHTML='';as.innerHTML='';getAllTypes('nat').forEach((t,i)=>{const tag=document.createElement('span');tag.className='persona-tag'+(activePersona==='nat'&&activeType===i?' active-tag':'');tag.textContent=t.type;tag.onclick=(e)=>{e.stopPropagation();showPersonaType(i,'nat')};ns.appendChild(tag)});getAllTypes('ash').forEach((t,i)=>{const tag=document.createElement('span');tag.className='persona-tag'+(activePersona==='ash'&&activeType===i?' active-tag':'');tag.textContent=t.type;tag.onclick=(e)=>{e.stopPropagation();showPersonaType(i,'ash')};as.appendChild(tag)})}
+function setPersona(who){activePersona=who;document.getElementById('pcNat').classList.toggle('active-card',who==='nat');document.getElementById('pcAsh').classList.toggle('active-card',who==='ash');showPersonaType(0,who)}
+function showPersonaType(idx,who){activePersona=who;activeType=idx;const types=getAllTypes(who);if(!types[idx])return;const data=types[idx];const isCustom=idx>=personaData[who].types.length;const det=document.getElementById('personaDetail');det.innerHTML=`<div class="persona-detail"><div class="pd-system">${data.system}${isCustom?' ✦':''}</div><div class="pd-type">${data.type}</div><div class="pd-desc">${data.desc}</div><div class="pd-traits">${data.traits.map(t=>`<span class="pd-trait">${t}</span>`).join('')}</div></div>`;renderPersonaStacks()}
+function renderSynastry(){const el=document.getElementById('synText');el.innerHTML=personaData.synastry.map(s=>`<div style="margin-bottom:0.8rem"><strong style="color:#c4a35a;font-family:'Cinzel',serif;font-size:0.7rem">${s.title}</strong><br><span style="font-size:0.85rem">${s.desc}</span></div>`).join('')}
+function togglePersonaAdd(){document.getElementById('personaAddForm').classList.toggle('hidden')}
+function addCustomPersona(){const who=document.getElementById('pNewWho').value;const system=document.getElementById('pNewSystem').value.trim();const type=document.getElementById('pNewType').value.trim();const desc=document.getElementById('pNewDesc').value.trim();const traitsRaw=document.getElementById('pNewTraits').value.trim();if(!system||!type||!desc)return;const traits=traitsRaw?traitsRaw.split(',').map(t=>t.trim()).filter(Boolean):[];if(!customPersona[who])customPersona[who]=[];customPersona[who].push({system,type,desc,traits,custom:true});['pNewSystem','pNewType','pNewDesc','pNewTraits'].forEach(id=>document.getElementById(id).value='');document.getElementById('personaAddForm').classList.add('hidden');saveAll();setPersona(who);showPersonaType(getAllTypes(who).length-1,who)}
+function deleteCustomPersona(){if(activeType===null)return;const types=getAllTypes(activePersona);const data=types[activeType];if(!data||!data.custom){alert('Cannot delete built-in types.');return}if(!confirm('Delete this custom type?'))return;const ci=customPersona[activePersona].indexOf(data);if(ci>-1)customPersona[activePersona].splice(ci,1);activeType=0;saveAll();renderPersonaStacks();showPersonaType(0,activePersona)}
+function exportPersona(){let doc='⟡ THE SOUL MAP ⟡\n';doc+='━'.repeat(40)+'\n\n';['nat','ash'].forEach(who=>{const d=personaData[who];doc+=`${d.icon} ${d.name} — ${d.role}\n`;doc+='─'.repeat(30)+'\n';getAllTypes(who).forEach(t=>{doc+=`\n${t.system}: ${t.type}${t.custom?' (Custom)':''}\n`;doc+=t.desc+'\n';if(t.traits.length)doc+='Traits: '+t.traits.join(', ')+'\n'});doc+='\n\n'});doc+='⟡ SYNASTRY ⟡\n';doc+='━'.repeat(40)+'\n\n';personaData.synastry.forEach(s=>{doc+=`${s.title}\n${s.desc}\n\n`});const blob=new Blob([doc],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sylvaris-soul-map.txt';a.click();URL.revokeObjectURL(a.href)}
+
+// ════════════════════════════════════
+// PERSISTENCE
+// ════════════════════════════════════
+function saveAll(){try{localStorage.setItem('hh_hist',JSON.stringify(history));localStorage.setItem('hh_ttt',JSON.stringify(tttScore));localStorage.setItem('hh_pet',JSON.stringify(pet));localStorage.setItem('hh_gfav',JSON.stringify(grimSaved));localStorage.setItem('hh_cgrim',JSON.stringify(customGrimoire));localStorage.setItem('hh_cpers',JSON.stringify(customPersona))}catch(e){}}
+function loadAll(){try{const h=localStorage.getItem('hh_hist');if(h)history=JSON.parse(h);const t=localStorage.getItem('hh_ttt');if(t)tttScore=JSON.parse(t);const p=localStorage.getItem('hh_pet');if(p)pet=JSON.parse(p);const g=localStorage.getItem('hh_gfav');if(g)grimSaved=JSON.parse(g);const cg=localStorage.getItem('hh_cgrim');if(cg)customGrimoire=JSON.parse(cg);const cp=localStorage.getItem('hh_cpers');if(cp)customPersona=JSON.parse(cp)}catch(e){}}
+
+init();
+</script>
+</body>
+</html>
